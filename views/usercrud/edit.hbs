@@ -30,7 +30,7 @@
           <h3 class="box-title">User Info</h3>
         </div>
         <!-- form -->
-        <form action="/crud/user/{{crud_user.id}}?_method=put" method="post">
+        <form action="/edit" method="put" >
           <div class="box-body">
             <div class="form-group has-feedback">
               <input type="text" class="form-control" name="user[displayName]" placeholder="Display Name" value="{{crud_user.displayName}}" required/>
