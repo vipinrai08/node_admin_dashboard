@@ -98,6 +98,11 @@ var tables = require('./routes/tables');
 var uielements = require('./routes/ui-elements');
 var widgets = require('./routes/widgets');
 var mailbox = require('./routes/mailbox');
+var show  =require('./routes/show');
+var list =require('./routes/list');
+var edit =require('./routes/edit');
+var New  =require('./routes/New');
+
 
 app.use('/login', login);
 app.use('/register', register);
@@ -115,6 +120,10 @@ app.use('/tables', tables);
 app.use('/ui-elements', uielements);
 app.use('/widgets', widgets);
 app.use('/mailbox', mailbox);
+app.use('/New', New);
+app.use('/edit', edit);
+app.use('/show', show);
+app.use('/list', list);
 
 app.get('/', function(req,res){
   res.render('dashboard');
