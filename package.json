@@ -23,6 +23,7 @@
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",
+    "git": "^0.1.5",
     "handlebars-helpers": "^0.10.0",
     "mongodb": "*",
     "mongoose": "*",
