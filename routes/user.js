@@ -15,23 +15,19 @@ router.get('/New', (req, res) => {
         email: req.body.email,
         username: req.body.username,
         password: req.body.password
-     })
-     user
-     .save()
-     .then(result =>{
-         console.log(result);
-         res.status(201).json({
-             message: ' Usercreated'
-         })
-         .catch(err => {
-             res.status(500).json({
-                 error: err
-             });
-         });
+    });
+    user.save()
+        .then((user) => {
+            console.log(user);
+            res.status(200).redirect('/list');
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(400).redirect('/usercrud/New');
+        });
+   
+     }); 
 
-     });
- });
- 
 router.get('/show', (req, res) => {
     res.render('usercrud/show', {
      title: 'Show'
@@ -77,7 +73,7 @@ router.get('/edit', (req, res) => {
     });
 });
  router.put('/edit', function(req,res,next){
-     var username = req.body.username;
+     var username = req.body.params.username;
      user.update({username: username}, { $set:{ displayname: req.body.newdisplayName}})
      .exec()
      .then(result => {
