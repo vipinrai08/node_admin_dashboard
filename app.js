@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
-var session = require('express-session');
+var expressSession = require('express-session');
 var passport = require('passport');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/AdminLTE');
@@ -20,20 +20,20 @@ app.set('view engine', '.hbs');
 
 app.use( express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
-/*
-    Bodyparser Middleware + Express session
-*/
+// BodyParser Middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(expressValidator());
 app.use(cookieParser());
-// session -> keep the user loggin after he login in on the website
-//         -> creates an object req.session, where you can add properties
-//         -> (ex: req.session.page_views, to count how many times he entered on the page)
-app.use(session({
-    secret: 'secret',
-    saveUninitialized: false,
-    resave: true
-}));
+
+//express session
+app.use(
+	expressSession({
+		secret: 'secret',
+		saveUninitialized: false,
+		resave: true
+	})
+);
 app.use(function(req, res, next) {
 	if (!req.session) {
 		res.redirect('/login');
@@ -44,38 +44,36 @@ app.use(function(req, res, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Express Validator
+app.use(
+	expressValidator({
+		errorFormatter: function(param, msg, value) {
+			var namespace = param.split('.'),
+				root = namespace.shift(),
+				formParam = root;
 
-/*
-     Validator to validate data incoming with the re object to the server
-*/
-app.use(expressValidator({
-  errorFormatter: function(param, msg, value) {
-      var namespace = param.split('.')
-      , root    = namespace.shift()
-      , formParam = root;
+			while (namespace.length) {
+				formParam += '[' + namespace.shift() + ']';
+			}
+			return {
+				param: formParam,
+				msg: msg,
+				value: value
+			};
+		}
+	})
+);
 
-    while(namespace.length) {
-      formParam += '[' + namespace.shift() + ']';
-    }
-    return {
-      param : formParam,
-      msg   : msg,
-      value : value
-    };
-  }
-}));
-
-
-/*
-    Flash to pop-up mesages in the browser
-*/
+// Connect Flash
 app.use(flash());
-app.use(function (req, res, next) {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  res.locals.user = req.user || null;
-  next();
+
+// Global Vars
+app.use(function(req, res, next) {
+	res.locals.success_msg = req.flash('success_msg');
+	res.locals.error_msg = req.flash('error_msg');
+	res.locals.error = req.flash('error');
+	res.locals.user = req.user || null;
+	next();
 });
 
 
@@ -98,10 +96,8 @@ var tables = require('./routes/tables');
 var uielements = require('./routes/ui-elements');
 var widgets = require('./routes/widgets');
 var mailbox = require('./routes/mailbox');
-var show  =require('./routes/show');
-var list =require('./routes/list');
-var edit =require('./routes/edit');
-var New  =require('./routes/New');
+var user =require('./routes/user');
+
 
 
 app.use('/login', login);
@@ -120,10 +116,8 @@ app.use('/tables', tables);
 app.use('/ui-elements', uielements);
 app.use('/widgets', widgets);
 app.use('/mailbox', mailbox);
-app.use('/New', New);
-app.use('/edit', edit);
-app.use('/show', show);
-app.use('/list', list);
+app.use('/usercrud', user);
+
 
 app.get('/', function(req,res){
   res.render('dashboard');

@@ -7,12 +7,4 @@ router.get('/', (req, res) => {
     });
 });
 
-// router.get('/', (req, res) => {
-//     res.render('examples/invoice-print', {
-//      title: 'Invoice Print',
-//      layout: false
-//     });
-// });
-
-
   module.exports = router;
