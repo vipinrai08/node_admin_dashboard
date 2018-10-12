@@ -100,6 +100,7 @@ var user =require('./routes/user');
 
 
 
+
 app.use('/login', login);
 app.use('/register', register);
 app.use('/dashboard',dashboard);
@@ -117,6 +118,7 @@ app.use('/ui-elements', uielements);
 app.use('/widgets', widgets);
 app.use('/mailbox', mailbox);
 app.use('/usercrud', user);
+
 
 
 app.get('/', function(req,res){
