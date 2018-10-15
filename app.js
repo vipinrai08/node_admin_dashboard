@@ -25,7 +25,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
 app.use(cookieParser());
-
 //express session
 app.use(
 	expressSession({
@@ -34,12 +33,7 @@ app.use(
 		resave: true
 	})
 );
-app.use(function(req, res, next) {
-	if (!req.session) {
-		res.redirect('/login');
-	}
-	next();
-});
+
 // Passport init
 app.use(passport.initialize());
 app.use(passport.session());
@@ -101,6 +95,8 @@ var user =require('./routes/user');
 
 
 
+
+
 app.use('/login', login);
 app.use('/register', register);
 app.use('/dashboard',dashboard);
@@ -118,6 +114,8 @@ app.use('/ui-elements', uielements);
 app.use('/widgets', widgets);
 app.use('/mailbox', mailbox);
 app.use('/usercrud', user);
+
+
 
 
 
