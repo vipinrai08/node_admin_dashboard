@@ -2,35 +2,41 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const mongoose = require('mongoose');
+var ObjectId = require('mongodb').ObjectId
 
 router.get('/user', (req, res) => {
     res.render('user', {title: 'user'});
 });
 
 router.get('/list',(req, res) =>{
-    User.find()
-    .exec()
-    .then(docs => {
-        var response = {
-            count: docs.lenght,
-           user: docs.map(doc =>{
-                return{
-                    name: doc.name,
-                    age: doc.age,
-                    email: doc.email,
-                }
- 
-            })
-        }
+    User
+    .find()
+    .select("name age email")
+    .then(user => {
         res.render('user/list')
     })
+//     .exec()
+//     .then(user => {
+//         var response = {
+//             count: user.lenght,
+//            user: user.map(doc =>{
+//                 return{
+//                     name: user.name,
+//                     age: user.age,
+//                     email: user.email,
+//                 }
+ 
+//             })
+//         }
+//         res.render('user/list')
+//     })
         .catch(err => {
             console.log(err);
             res.status(500).json({
                 error: err
             });
         });
-})
+ })
 
 router.get('/add', (req, res)=>{
     res.render('user/add',{
@@ -48,15 +54,7 @@ router.post('/add', (req, res)=>{
         .save()
         .then(result => {
            console.log(result);
-           res.status(201).json({
-            message: "Created user successfully",
-            createduser: {
-                name: result.nmae,
-                age: result.age,
-                email: result.email,
-                _id: result._id,
-            }
-           });
+          res.redirect('/user/list')
         })
            .catch(err =>{
                console.log(err);
@@ -64,6 +62,7 @@ router.post('/add', (req, res)=>{
                error: err
                });
            });
+        
 })
 
 router.get('/edit', (req, res)=>{
@@ -73,6 +72,8 @@ router.get('/edit', (req, res)=>{
 })
 
 router.put('/edit', (req, res)=>{
+    var o_id = new ObjectId(req.params.id)
+   User.update( {"_id": o_id},{ $set:{ name: req.body.newName, age:req.body.newAge, email: req.body}})
     var user = new User({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -83,15 +84,7 @@ router.put('/edit', (req, res)=>{
         .save()
         .then(result => {
            console.log(result);
-           res.status(201).json({
-            message: "Updated user successfully",
-            createduser: {
-                name: result.nmae,
-                age: result.age,
-                email: result.email,
-                _id: result._id,
-            }
-           });
+           res.redirect('/user/list')
         })
            .catch(err =>{
                console.log(err);
@@ -100,6 +93,7 @@ router.put('/edit', (req, res)=>{
                });
            });
 })
+
 
 router.post('/delete', (req,res)=>{
     User.remove({ _id: req.params.id})
