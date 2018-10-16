@@ -7,9 +7,10 @@ var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var expressSession = require('express-session');
 var passport = require('passport');
+var methodOverride = require('method-override')
+var User = require('./models/users');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/AdminLTE');
-
 // Init App
 var app = express();
 
@@ -22,9 +23,19 @@ app.use( express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 })
 
 // BodyParser Middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(cookieParser());
+
+
+app.use(methodOverride(function (req, res) {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    var method = req.body._method
+    delete req.body._method
+    return method
+  }
+}))
+
 //express session
 app.use(
 	expressSession({
@@ -33,6 +44,12 @@ app.use(
 		resave: true
 	})
 );
+app.use(function(req, res, next) {
+	if (!req.session) {
+		res.redirect('/login');
+	}
+	next();
+});
 
 // Passport init
 app.use(passport.initialize());
@@ -71,57 +88,58 @@ app.use(function(req, res, next) {
 });
 
 
+app.post('/register', function(req, res) {
+	console.log(req.body);
+	var name = req.body.name;
+	var email = req.body.email;
+	var username = req.body.username;
+	var password = req.body.password;
+
+	// Validation
+	req.checkBody('name', 'Name is required').notEmpty();
+	req.checkBody('email', 'Email is required').notEmpty();
+	req.checkBody('email', 'Email is not valid').isEmail();
+	req.checkBody('password', 'Password is required').notEmpty();
+
+	var newUser = {
+		name: name,
+		email: email,
+		username: username,
+		password: password,
+	};
+	User.create(newUser, function(err, user) {
+		if (err) throw err;
+		console.log(user);
+	});
+	req.flash('success_msg', 'You are registered and can now login');
+	res.redirect('/users/login');
+});
+
 /*
     Website routes
 */
-var login = require('./routes/login');
+// var login = require('./routes/login');
 var profile = require('./routes/profile');
 var lockscreen = require('./routes/lockscreen');
-var register = require('./routes/register');
+// var register = require('./routes/register');
 var dashboard = require('./routes/dashboard');
-var calendar = require('./routes/calendar');
-var charts = require('./routes/charts');
-var invoice = require('./routes/invoice');
-var invoiceprint = require('./routes/invoice-print')
-var general = require('./routes/general');
-var advanced = require('./routes/advanced');
-var editors = require('./routes/editors');
-var tables = require('./routes/tables');
-var uielements = require('./routes/ui-elements');
-var widgets = require('./routes/widgets');
-var mailbox = require('./routes/mailbox');
 var user =require('./routes/user');
+var users = require('./routes/users');
 
 
-
-
-
-
-app.use('/login', login);
-app.use('/register', register);
+// app.use('/login', login);
+// app.use('/register', register);
 app.use('/dashboard',dashboard);
-app.use('/calendar', calendar);
-app.use('/charts', charts);
-app.use('/invoice', invoice);
-app.use('/invoicePrint', invoiceprint);
 app.use('/profile', profile);
 app.use('/lockscreen', lockscreen);
-app.use('/general', general);
-app.use('/advanced',advanced);
-app.use('/editors', editors);
-app.use('/tables', tables);
-app.use('/ui-elements', uielements);
-app.use('/widgets', widgets);
-app.use('/mailbox', mailbox);
-app.use('/usercrud', user);
+app.use('/user', user);
+app.use('/users', users);
 
-
-
-
-
-app.get('/', function(req,res){
-  res.render('dashboard');
-});
+// app.get('/', function(req,res){
+//   res.render('login', {
+// 	  layout : false
+//   });
+// });
 
 // Set Port
 app.set('port', process.env.PORT || 3000);

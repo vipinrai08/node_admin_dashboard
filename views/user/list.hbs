@@ -1,0 +1,27 @@
+<section class="content-header">
+  <h1>
+    User List
+  </h1>
+<p>Below you will see list of users.</p><br/>
+<table width="80%" border="0">
+  <tbody>
+    <tr style="text-align:left; background-color:#CCC">
+      <th>Name</th>
+      <th>Age</th>
+      <th>Email</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <td>username </td>
+      <td>user age </td>
+      <td>user email </td>
+      <td>
+        <div style="float:left"><a href="/user/edit">Edit</a>
+          <form method="post" action="/user/delete" style="float:right">
+            <input type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure you want to delete?')"/>
+          </form>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

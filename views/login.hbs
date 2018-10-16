@@ -35,8 +35,21 @@
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
-
-    <form action="dashboard" method="get">
+<form method="post" action="/users/login">
+  <div class="form-group">
+    <label>Username</label>
+    <input type="text" class="form-control" name="username" placeholder="Username">
+  </div>
+  <div class="form-group">
+    <label>Password</label>
+    <input type="password" class="form-control" name="password" placeholder="Password">
+  </div>
+   <div>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+        </div>
+</form>
+</div>
+    {{!-- <form action="/users/login" method="post">
       <div class="form-group has-feedback">
         <input type="email" class="form-control" placeholder="Email">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -59,7 +72,7 @@
         </div>
         <!-- /.col -->
       </div>
-    </form>
+    </form> --}}
 
     <div class="social-auth-links text-center">
       <p>- OR -</p>

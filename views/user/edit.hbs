@@ -1,0 +1,36 @@
+<section class="content-header">
+  <h1>
+   Update User
+  </h1>
+<form action="/user/edit" method="post" name="form1">
+  <table width="25%" border="0">
+    <tbody>
+      <tr>
+        <td>Name</td>
+        <td>
+          <input id="name" type="text" name="name" placeholder="name" class="form-control"/>
+        </td>
+      </tr>
+      <tr>
+        <td>Age</td>
+        <td>
+          <input type="text" name="age" placeholder=" age" class="form-control"/>
+        </td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td>
+          <input type="text" name="email" placeholder="email" class="form-control"/>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <input type="submit" name="Submit" value="Edit"/>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <input type="hidden" name="_method" value="PUT"/>
+</form>
+</section>

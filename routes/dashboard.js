@@ -11,12 +11,5 @@ router.post('/',(req, res) =>{
     });
 });
 
-// router.get('/', (req, res) => {
-//     res.render('dashboard/v1', {title: 'V1'});
-// });
-
-// router.get('/', (req, res) => {
-//     res.render('dashboard/v2', {title:'V2'});
-// });
 
 module.exports = router;

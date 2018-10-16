@@ -3,7 +3,7 @@ const router = express.Router();
 
 
 router.get('/', (req, res) => {
-    res.render('examples/lockscreen', {
+    res.render('lockscreen', {
      title: 'lockscreen',
      layout: false
     });
