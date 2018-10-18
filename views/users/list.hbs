@@ -1,0 +1,30 @@
+<section class="content-header">
+  <h1>
+    Users List
+  </h1>
+<p>Below you will see list of users.</p><br/>
+<a style="border: 1px solid grey; padding: 10px; margin: 10px 0px; width: 88px; display: block; text-align: center; background-color: #1e282c; color: #fff; font-weight: 800" href="/users/add/">Add</a>
+<table width="80%" border="0">
+  <tbody>
+    <tr style="text-align:left; background-color:#CCC">
+      <th>Name</th>
+      <th>Age</th>
+      <th>Email</th>
+      <th>Action</th>
+    </tr>
+    {{#each users}}
+    <tr>
+      <td>{{this.name}} </td>
+      <td>{{this.age}} Years </td>
+      <td>{{this.email}} </td>
+      <td>
+        <div style="float:left">
+          <a href="/userS/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
+          <a href="/users/delete/{{this.id}}">Delete</a> 
+          {{!-- <a href="/users/add/">Add</a> --}}
+        </div>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

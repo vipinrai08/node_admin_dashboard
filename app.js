@@ -123,23 +123,28 @@ var profile = require('./routes/profile');
 var lockscreen = require('./routes/lockscreen');
 // var register = require('./routes/register');
 var dashboard = require('./routes/dashboard');
-var user =require('./routes/user');
-var users = require('./routes/users');
-
+var users =require('./routes/users');
+var Auth = require('./routes/Auth');
+var products = require('./routes/products');
+var categories = require('./routes/categories');
 
 // app.use('/login', login);
 // app.use('/register', register);
 app.use('/dashboard',dashboard);
 app.use('/profile', profile);
 app.use('/lockscreen', lockscreen);
-app.use('/user', user);
 app.use('/users', users);
+app.use('/Auth', Auth);
+app.use('/products', products);
+app.use('/categories', categories);
+
 
 // app.get('/', function(req,res){
-//   res.render('login', {
+//   res.render('', {
 // 	  layout : false
 //   });
 // });
+
 
 // Set Port
 app.set('port', process.env.PORT || 3000);

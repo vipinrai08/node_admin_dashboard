@@ -1,0 +1,25 @@
+<section class="content-header">
+  <h1>
+    Categories List
+  </h1>
+<p>Below you will see list of categories.</p><br/>
+<a style="border: 1px solid grey; padding: 10px; margin: 10px 0px; width: 88px; display: block; text-align: center; background-color: #1e282c; color: #fff; font-weight: 800" href="/categories/add/">Add</a>
+<table width="80%" border="0">
+  <tbody>
+    <tr style="text-align:left; background-color:#CCC">
+      <th>Name</th>
+      <th>Action</th>
+    </tr>
+    {{#each categories}}
+    <tr>
+      <td>{{this.name}} </td>
+      <td>
+        <div style="float:left">
+          <a href="/categories/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
+          <a href="/categories/delete/{{this.id}}">Delete</a>
+        </div>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

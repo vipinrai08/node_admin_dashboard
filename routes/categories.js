@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
+const Categories = require('../models/categories');
 const mongoose = require('mongoose');
 var ObjectId = require('mongodb').ObjectId
 
-router.get('/users', (req, res) => {
-    res.render('users', {title: 'users'});
+router.get('/categories', (req, res) => {
+    res.render('categories', {title: 'categories'});
 });
 
 router.get('/',(req, res) =>{
-   User.find()
-    .select("name age email")
+   Categories.find()
+    .select("name")
     .exec()
-    .then(users => { console.log(users) 
-        res.render('users/list', { users })
+    .then(categories => { console.log(categories) 
+        res.render('categories/list', { categories })
     })
     .catch(err => {
         console.log(err);
@@ -24,76 +24,73 @@ router.get('/',(req, res) =>{
  })
 
 router.get('/add', (req, res)=>{
-    res.render('users/add',{
+    res.render('categories/add',{
         title: 'Add'
     })
 })
 router.post('/add', (req, res)=>{
-    var user = new User({
+    var categories = new Categories({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        age: req.body.age,
-        email: req.body.email
     });
-       user
+       categories
         .save()
         .then(result => {
            console.log(result);
-          res.redirect('/users'),
-           req.flash('Users Created');
+          res.redirect('/categories'),
+           req.flash('Categories Created');
         })
            .catch(err =>{
                console.log(err);
-               res.redirect('/users/add')
+               res.redirect('/categories/add')
            });
         
 })
 
 router.get('/edit/:id', async (req, res)=>{
-    const users = await getUser(req.params.id);
-    res.render('users/edit',{
+    const categories = await getCategories(req.params.id);
+    res.render('categories/edit',{
         title: 'Edit',
-        users
+        categories
     })
 });
 
-async function getUser(id) {
+async function getCategories(id) {
     try{
-        const user = await User.findOne({ _id: id }).exec();
-        return user;
+        const categories = await Categories.findOne({ _id: id }).exec();
+        return categories;
     } catch(err) {
         throw err;
     }
 }
 
 router.put('/edit/:id', (req, res)=>{
-   User.update({_id: req.params.id},
+    Categories.update({_id: req.params.id},
         { $set:{ 
-            name: req.body.name, 
-            age:req.body.age, 
-            email: req.body.email
+            name: req.body.name,
+             
         }
     })
     .exec()
     .then(res => {
-        res.redirect('/users');
-        req.flash('User Updated');
+        res.redirect('/ categories');
+        req.flash('Categories Updated');
     })
     .catch(err => {
-        res.redirect('/users');
+        res.redirect('/categories');
     })
 })
 
 
 router.get('/delete/:id', (req,res)=>{
-    User.remove({ _id: req.params.id})
+   Categories.remove({ _id: req.params.id})
     .exec()
     .then(result => {
-        res.redirect('/users')
+        res.redirect('/ categories')
     })
     .catch(err => {
         console.log(err);
-        res.redirect('users/list')
+        res.redirect(' categories/list')
     });
 })
  

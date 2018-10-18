@@ -1,0 +1,36 @@
+<section class="content-header">
+  <h1>
+    Products List
+  </h1>
+<p>Below you will see list of products.</p><br/>
+<a style="border: 1px solid grey; padding: 10px; margin: 10px 0px; width: 88px; display: block; text-align: center; background-color: #1e282c; color: #fff; font-weight: 800" href="/products/add/">Add</a>
+<table width="80%" border="0">
+  <tbody>
+    <tr style="text-align:left; background-color:#CCC">
+      <th>Categories</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Day</th>
+      <th>Date</th>
+      <th>Action</th>
+    </tr>
+    {{#each products}}
+    <tr>
+      <td>{{this.categories}}</td>
+      <td>{{this.name}} </td>
+      <td>{{this.price}}  </td>
+      <td>{{this.quantity}} </td>
+      <td>{{this.day}}</td>
+       <td>{{this.date}} </td>
+      <td>
+        <div style="float:left">
+          <a href="/products/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
+          <a href="/products/delete/{{this.id}}">Delete</a>
+          {{!-- <a href="/products/add/">Add</a> --}}
+        </div>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
