@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://1vipin:Vipin1234@ds135433.mlab.com:35433/adminlte');
+ const mongoose = require('mongoose');
+mongoose.connect('mongodb://1vipin:Vipin1234@ds135433.mlab.com:35433/adminlte',{ useNewUrlParser: true });
 var ObjectId = require('mongodb').ObjectId
 
 router.get('/users', (req, res) => {
