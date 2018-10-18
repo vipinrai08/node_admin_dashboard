@@ -5,7 +5,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/users');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://1vipin:Vipin1234@ds135433.mlab.com:35433/adminlte',{ useNewUrlParser: true });
+mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte',{ useNewUrlParser: true });
 
 
 
