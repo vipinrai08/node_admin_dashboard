@@ -10,36 +10,36 @@
   </h3>
 <form action="/products/add" method="post" name="form1">
   <div class="box-body">
-     <div class="form-group">
-          <label>Categories</label>
-          <select name="categories">
-            <option value=""></option>
-            <option value="Women" >Women</option>
-            <option value="Men">Man</option>
-             <option value="kids">kids</option>
-             <option value="Electronics & Electricals">Electronics & Electricals</option>
-
-          </select>
-        </div>
       <div class="form-group">
           <label>Name</label>
-          <input id="name" type="text" name="name" placeholder="name" class="form-control"  />
+          <input id="name" type="text" name="name" placeholder="name" class="form-control" required="true"   />
+        </div>
+         <div class="form-group">
+          <label>Categories</label>
+          <select name="categories" style="
+    width: 100%;
+    height: 33px;
+    background-color: #fff;
+    border: 1px solid #d2d6de;
+">
+            <option value="">Select</option>
+            <option value="Women" >Women</option>
+            <option value="Men">Men</option>
+             <option value="kids">kids</option>
+             <option value="Electronics & Electricals">Electronics & Electricals</option>
+          </select>
         </div>
         <div class="form-group">
           <label>Price</label>
-          <input type="text" name="price" placeholder=" price" class="form-control"  />
+          <input type="number" name="price" placeholder=" price" class="form-control" required="true"  />
        </div>
        <div class="form-group">
          <label>Quantity</label>
-          <input type="text" name="quantity" placeholder="quantity" class="form-control" />
-        </div>
-        <div class="form-group">
-         <label>Day</label>
-          <input type="text" name="day" placeholder="day" class="form-control" />
+          <input type="number" name="quantity" placeholder="quantity" class="form-control" min="1" max="5" required="true"  />
         </div>
         <div class="form-group">
          <label>Date</label>
-          <input type="text" name="date" placeholder="date" class="form-control" />
+          <input type="date" name="date" placeholder="date" class="form-control" required="true"  />
         </div>
        </div>
           <input type="submit" name="Submit" placeholder="Add" class="btn btn-primary"/>

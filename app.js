@@ -139,11 +139,11 @@ app.use('/products', products);
 app.use('/categories', categories);
 
 
-// app.get('/', function(req,res){
-//   res.render('', {
-// 	  layout : false
-//   });
-// });
+app.get('/', function(req,res){
+  res.render('Auth/login', {
+	  layout : false
+  });
+});
 
 
 // Set Port

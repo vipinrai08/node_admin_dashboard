@@ -8,14 +8,14 @@ var User = require('../models/users');
 
 // Login
 router.get('/login', function(req, res) {
-	res.render('login',{
+	res.render('Auth/login',{
         layout: false
     });
 });
 
 // Register view
 router.get('/register', function(req, res) {
-	res.render('register',{
+	res.render('Auth/register',{
         layout: false
     });
 });
@@ -37,7 +37,7 @@ router.post('/register', function(req, res) {
 
 	var err = req.validationErrors();
 	if (err) {
-		res.render('register', {
+		res.render('Auth/register', {
 			layout: false,
 			err: err
 		});
@@ -60,7 +60,7 @@ router.post('/register', function(req, res) {
 					},
 					function(err, mail) {
 						if (user || mail) {
-							res.render('register', {
+							res.render('Auth/register', {
 								layout: false,
 								user: user,
 								mail: mail
