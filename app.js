@@ -10,7 +10,7 @@ var passport = require('passport');
 var methodOverride = require('method-override')
 var User = require('./models/users');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/AdminLTE');
+mongoose.connect('mongodb://localhost:27017/AdminLTE');
 // Init App
 var app = express();
 
