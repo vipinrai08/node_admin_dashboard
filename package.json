@@ -26,7 +26,7 @@
     "git": "^0.1.5",
     "handlebars-helpers": "^0.10.0",
     "method-override": "^3.0.0",
-    "mongodb": "*",
+    "mongodb": "^3.1.8",
     "mongoose": "*",
     "nodemon": "^1.18.4",
     "passport": "*",

@@ -9,8 +9,10 @@ var expressSession = require('express-session');
 var passport = require('passport');
 var methodOverride = require('method-override')
 var User = require('./models/users');
+var mongo = require('mongodb');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://1vipin:Vipin1234@ds135433.mlab.com:35433/adminlte', { useNewUrlParser: true });
+var db = mongoose.connection;
 // Init App
 var app = express();
 
