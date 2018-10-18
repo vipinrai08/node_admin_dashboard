@@ -10,7 +10,7 @@ router.get('/products', (req, res) => {
 
 router.get('/',(req, res) =>{
    Product.find()
-    .select("name categories price quantity date")
+    .select("name categories price date")
     .exec()
     .then(products => { console.log(products) 
         res.render('products/list', { products })
@@ -34,7 +34,6 @@ router.post('/add', (req, res)=>{
         name: req.body.name,
         categories: req.body.categories,
         price: req.body.price,
-        quantity: req.body.quantity,
         date: req.body.date
     });
        product
@@ -74,7 +73,6 @@ router.put('/edit/:id', (req, res)=>{
             name: req.body.name,
             categories: req.body.categories,
             price: req.body.price,
-            quantity: req.body.quantity,
             date: req.body.date 
             
         }

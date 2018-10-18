@@ -11,9 +11,6 @@ productSchema = mongoose.Schema({
   price: {
       type: Number
   },
-  quantity:{
-      type: Number
-  },
   date:{
       type: String
   }
