@@ -43,12 +43,13 @@ app.use(
 	expressSession({
 		secret: 'secret',
 		saveUninitialized: false,
-		resave: true
+		resave: true,
 	})
 );
+
 app.use(function(req, res, next) {
 	if (!req.session) {
-		res.redirect('/login');
+		res.redirect('Auth/login');
 	}
 	next();
 });
@@ -129,6 +130,8 @@ var users =require('./routes/users');
 var Auth = require('./routes/Auth');
 var products = require('./routes/products');
 var categories = require('./routes/categories');
+var orders = require('./routes/orders');
+
 
 // app.use('/login', login);
 // app.use('/register', register);
@@ -139,6 +142,7 @@ app.use('/users', users);
 app.use('/Auth', Auth);
 app.use('/products', products);
 app.use('/categories', categories);
+app.use('/orders', orders);
 
 
 app.get('/', function(req,res){

@@ -30,6 +30,16 @@ router.get('/add', (req, res)=>{
     })
 })
 router.post('/add', (req, res)=>{
+    req.checkBody('name', 'Name is required').notEmpty();
+    req.checkBody('categories', 'Categories is required').notEmpty();
+    req.checkBody('price', 'Price is required').isNumeric();
+    req.checkBody('date', 'Date is required').notEmpty();
+ 
+    var errors = req.validationErrors();
+    if(errors){
+       res.redirect('/products/add');
+    } else
+    {
     var product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -48,7 +58,7 @@ router.post('/add', (req, res)=>{
                console.log(err);
                res.redirect('/products/add')
            });
-        
+        }  
 })
 
 router.get('/edit/:id', async (req, res)=>{

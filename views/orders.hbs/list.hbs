@@ -15,10 +15,10 @@
 
 <section class="content-header">
   <h1>
-    Products List
+    orders List
   </h1>
-<p>Below you will see list of products.</p>
-<a style="border: 1px solid grey; padding: 10px; margin: 10px 0px; width: 88px; display: block; text-align: center; background-color: #1e282c; color: #fff; font-weight: 800" href="/products/add/">Add</a>
+<p>Below you will see list of orders.</p>
+<a style="border: 1px solid grey; padding: 10px; margin: 10px 0px; width: 88px; display: block; text-align: center; background-color: #1e282c; color: #fff; font-weight: 800" href="/orders/add/">Add</a>
 <table width="80%" border="0" class="table-design">
   <tbody>
     <tr style="text-align:left; background-color:#CCC">
@@ -28,7 +28,7 @@
       <th>Date</th>
       <th>Action</th>
     </tr>
-    {{#each products}}
+    {{#each p}}
     <tr>
       <td>{{this.categories}}</td>
       <td>{{this.name}} </td>
@@ -36,8 +36,8 @@
        <td>{{this.date}} </td>
       <td>
         <div style="float:left">
-          <a href="/products/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
-          <a href="/products/delete/{{this.id}}">Delete</a>
+          <a href="/p/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
+          <a href="/p/delete/{{this.id}}">Delete</a>
         </div>
       </td>
     </tr>

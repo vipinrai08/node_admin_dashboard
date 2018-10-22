@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var app = express();
+const Joi = require('joi');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/users');
@@ -26,17 +27,28 @@ router.get('/register', function(req, res) {
 // Register User
 router.post('/register', function(req, res) {
 	// user.find({email:req.body.email})`
+	// const schema = Joi.object().keys({
+	// 	username: Joi.string().alphanum().min(3).max(30).required(),
+	// 	email: Joi.string().email({ minDomainAtoms: 2 }),
+	// 	password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/)
+	// })
+	// Joi.validate({ username: '' }, schema, function (err, value) { 
+	// 	if(err){
+	// 		res.redirect('Auth/register')
+	// 	}
+	// });
 	var name = req.body.name;
 	var email = req.body.email;
 	var username = req.body.username;
 	var password = req.body.password;
-
+ 
 	// Validation
 	req.checkBody('name', 'Name is required').notEmpty();
 	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('email', 'Email is not valid').isEmail();
+	req.checkBody('email', 'Email does not appear to be valid').isEmail();
 	req.checkBody('username', 'Username is required').notEmpty();
 	req.checkBody('password', 'Password is required').notEmpty();
+
 
 	var err = req.validationErrors();
 	if (err) {
@@ -45,49 +57,21 @@ router.post('/register', function(req, res) {
 			err: err
 		});
 	} else {
-		//checking for email and username are already taken
-		User.findOne(
-			{
-				username: {
-					$regex: '^' + username + '\\b',
-					$options: 'i'
-				}
-			},
-			function(err, user) {
-				User.findOne(
-					{
-						email: {
-							$regex: '^' + email + '\\b',
-							$options: 'i'
-						}
-					},
-					function(err, mail) {
-						if (user || mail) {
-							res.render('Auth/register', {
-								layout: false,
-								user: user,
-								mail: mail
-							});
-						} else {
-							var newUser = new User({
-								name: name,
-								email: email,
-								username: username,
-								password: password,
-							});
-							User.createUser(newUser, function(err, user) {
-								if (err) throw err;
-								console.log(user);
-							});
-							req.flash('success_msg', 'You are registered and can now login');
-							res.redirect('/Auth/login');
-						}
-					}
-				);
+		
+				var newUser = new User({
+					name: name,
+					email: email,
+					username: username,
+					password: password,
+				}); 
+				User.createUser(newUser, function(err, user) {
+					if (err) throw err;
+					console.log(user);
+				});
+				req.flash('success_msg', 'You are registered and can now login');
+				res.redirect('/Auth/login');
 			}
-		);
-	}
-});
+		});
 
 passport.use(
 	new LocalStrategy(function(username, password, done) {
@@ -123,14 +107,14 @@ passport.deserializeUser(function(id, done) {
 router.post(
 	'/login',
 	passport.authenticate('local', {
-		successRedirect: '/dashboard',
-		failureRedirect: '/Auth/login',
+		successReturnToOrRedirect: '/dashboard',
+		failureRedirect: '/Auth/login?Failed',
 		failureFlash: true
 	}),
 	function(req, res) {
 		res.redirect('/');
 	}
-);
+ );
 
 router.get('/logout', function(req, res) {
 	req.logout();

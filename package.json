@@ -25,6 +25,8 @@
     "express-validator": "*",
     "git": "^0.1.5",
     "handlebars-helpers": "^0.10.0",
+    "isvalid": "^1.6.6",
+    "joi": "^14.0.0",
     "method-override": "^3.0.0",
     "mongodb": "^3.1.8",
     "mongoose": "*",

@@ -30,6 +30,12 @@ router.get('/add', (req, res)=>{
     })
 })
 router.post('/add', (req, res)=>{
+    req.checkBody('name', 'Name is required').notEmpty();
+    
+    var errors = req.validationErrors();
+    if(errors){
+       res.redirect('/categories/add');
+    }
     var categories = new Categories({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
