@@ -108,7 +108,7 @@ router.post(
 	'/login',
 	passport.authenticate('local', {
 		successReturnToOrRedirect: '/dashboard',
-		failureRedirect: '/Auth/login?Failed',
+		failureRedirect: '/Auth/login',
 		failureFlash: true
 	}),
 	function(req, res) {

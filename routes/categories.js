@@ -5,11 +5,17 @@ const mongoose = require('mongoose');
  mongoose.connect('mongodb:admin:admin123@ds135433.mlab.com:35433/adminlte');
 var ObjectId = require('mongodb').ObjectId
 
-router.get('/categories', (req, res) => {
-    res.render('categories', {title: 'categories'});
-});
+// router.get('/categories', (req, res) => {
+//     res.render('categories', {title: 'categories'});
+// });
 
-router.get('/',(req, res) =>{
+function ensureAuthenticated(req, res, next){
+	if (req.isAuthenticated()){
+		return next();
+	}
+	res.redirect('/Auth/login');
+}
+router.get('/',ensureAuthenticated,(req, res) =>{
    Categories.find()
     .select("name")
     .exec()

@@ -7,11 +7,16 @@ mongoose.connect('mongodb:admin:admin123@ds135433.mlab.com:35433/adminlte');
 var ObjectId = require('mongodb').ObjectId
 
 
-router.get('/users', (req, res) => {
-    res.render('users', {title: 'users'});
-});
-
-router.get('/',(req, res) =>{
+// router.get('/users', (req, res) => {
+//     res.render('users', {title: 'users'});
+// });
+function ensureAuthenticated(req, res, next){
+	if (req.isAuthenticated()){
+		return next();
+	}
+	res.redirect('/Auth/login');
+}
+router.get('/',ensureAuthenticated,(req, res) =>{
    User.find()
     .select("name age email")
     .exec()

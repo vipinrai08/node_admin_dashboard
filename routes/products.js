@@ -5,11 +5,17 @@ const mongoose = require('mongoose');
  mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte');
 var ObjectId = require('mongodb').ObjectId
 
-router.get('/products', (req, res) => {
-    res.render('products', {title: 'products'});
-});
+// router.get('/products', (req, res) => {
+//     res.render('products', {title: 'products'});
+// });
 
-router.get('/',(req, res) =>{
+function ensureAuthenticated(req, res, next){
+	if (req.isAuthenticated()){
+		return next();
+	}
+	res.redirect('/Auth/login');
+}
+router.get('/',ensureAuthenticated,(req, res) =>{
    Product.find()
     .select("name categories price date")
     .exec()
