@@ -133,6 +133,7 @@ var categories = require('./routes/categories');
 var orders = require('./routes/orders');
 
 
+
 // app.use('/login', login);
 // app.use('/register', register);
 app.use('/dashboard',dashboard);
@@ -150,7 +151,6 @@ app.get('/', function(req,res){
 	  layout : false
   });
 });
-
 
 // Set Port
 app.set('port', process.env.PORT || 3000);

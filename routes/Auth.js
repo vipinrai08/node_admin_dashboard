@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var app = express();
-const Joi = require('joi');
 var passport = require('passport');
+const Utils = require('../utils/index');
+var randomstring = require('randomstring');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/users');
 var mongoose = require('mongoose');
@@ -122,6 +123,40 @@ router.get('/logout', function(req, res) {
 	req.flash('success_msg', 'You are logged out');
 
 	res.redirect('/Auth/login');
+});
+
+// FORGOT PASSWORD
+router.get('/forgotpassword', function(req, res) {
+	res.render('Auth/forgotpassword',{
+        layout: false
+    });
+});
+router.post('/resetpage', (req, res, next) => {
+	const token = randomstring.generate(50);
+	User.findOneAndUpdate({ email: req.body.email }, { $set: { token: token } })
+	.exec()
+	.then(result => {
+		if(!result) {
+			return res.status(400).json({
+				message: 'Email doesn\'t exists..'
+			});
+		}
+
+		Utils.sendMail({
+			to: 'reply.vipinrai@gmail.com',//req.body.email,
+			subject: 'Reset Password',
+			message: { token: token, email: req.body.email },
+			template: 'resetpage'
+		});
+		return res.status(200).json({
+			message: 'Verification email has been sent.'
+		});
+	})
+	.catch(err => {
+		return res.status(500).json({
+			message: 'Email doesn\'t exists..'
+		});
+	});
 });
 
 module.exports = router;

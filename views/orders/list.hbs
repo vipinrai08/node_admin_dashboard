@@ -15,29 +15,37 @@
 
 <section class="content-header">
   <h1>
-    orders List
+    Orders List
   </h1>
 <p>Below you will see list of orders.</p>
 <a style="border: 1px solid grey; padding: 10px; margin: 10px 0px; width: 88px; display: block; text-align: center; background-color: #1e282c; color: #fff; font-weight: 800" href="/orders/add/">Add</a>
 <table width="80%" border="0" class="table-design">
   <tbody>
     <tr style="text-align:left; background-color:#CCC">
+      <th>Products</th>
       <th>Categories</th>
-      <th>Name</th>
       <th>Price</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Contact Number</th>
+      <th>Address</th>
       <th>Date</th>
       <th>Action</th>
     </tr>
-    {{#each p}}
+    {{#each orders}}
     <tr>
+      <td>{{this.products}}</td>
       <td>{{this.categories}}</td>
-      <td>{{this.name}} </td>
       <td>{{this.price}}  </td>
+      <td>{{this.name}} </td>
+      <td>{{this.email}} </td>
+      <td>{{this.contactnumber}} </td>
+      <td>{{this.address}} </td>
        <td>{{this.date}} </td>
       <td>
         <div style="float:left">
-          <a href="/p/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
-          <a href="/p/delete/{{this.id}}">Delete</a>
+          <a href="/orders/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
+          <a href="/orders/delete/{{this.id}}">Delete</a>
         </div>
       </td>
     </tr>

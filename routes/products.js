@@ -15,7 +15,8 @@ function ensureAuthenticated(req, res, next){
 	}
 	res.redirect('/Auth/login');
 }
-router.get('/',ensureAuthenticated,(req, res) =>{
+
+router.get('/', ensureAuthenticated, (req, res) =>{
    Product.find()
     .select("name categories price date")
     .exec()
