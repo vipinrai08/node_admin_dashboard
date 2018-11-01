@@ -177,20 +177,17 @@ app.get('/', function(req, res) {
 
 
 app.use(function(req, res, next){
-  res.status('404', {layout: 'false'});
+  res.status('404', {layout: false});
 
   // respond with html page
-  if (req.accepts('hbs')) {
-    res.render('404', { url: req.url });
-    return;
-  }
+//   if (req.accepts('hbs')) {
+//     res.render('404', { url: req.url });
+//     return;
+//   }
 
   // respond with json
   if (req.accepts('json')) {
-    res.send({ 
-		error: 'Not found',
-		layout: false
-	 });
+    res.send('Sorry, the page not found');
     return;
   }
 
