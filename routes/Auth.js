@@ -2,20 +2,25 @@ var express = require('express');
 var router = express.Router();
 var app = express();
 var passport = require('passport');
-const Utils = require('../utils/index');
-var randomstring = require('randomstring');
+var configAuth = require('./configAuth');
 var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
 var User = require('../models/users');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte',{ useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/adminlte');
 
 
 
 // Login
 router.get('/login', function(req, res) {
-	res.render('Auth/login',{
-        layout: false
-    });
+		if (req.isAuthenticated()){
+			res.redirect('/dashboard');
+		}
+		 else {
+		res.render('Auth/login',{
+			layout: false
+		});
+	}
 });
 
 // Register view
@@ -27,17 +32,7 @@ router.get('/register', function(req, res) {
 
 // Register User
 router.post('/register', function(req, res) {
-	// user.find({email:req.body.email})`
-	// const schema = Joi.object().keys({
-	// 	username: Joi.string().alphanum().min(3).max(30).required(),
-	// 	email: Joi.string().email({ minDomainAtoms: 2 }),
-	// 	password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/)
-	// })
-	// Joi.validate({ username: '' }, schema, function (err, value) { 
-	// 	if(err){
-	// 		res.redirect('Auth/register')
-	// 	}
-	// });
+
 	var name = req.body.name;
 	var email = req.body.email;
 	var username = req.body.username;
@@ -52,6 +47,7 @@ router.post('/register', function(req, res) {
 
 
 	var err = req.validationErrors();
+	console.log(err)
 	if (err) {
 		res.render('Auth/register', {
 			layout: false,
@@ -105,58 +101,64 @@ passport.deserializeUser(function(id, done) {
 	});
 });
 
-router.post(
-	'/login',
-	passport.authenticate('local', {
-		successReturnToOrRedirect: '/dashboard',
-		failureRedirect: '/Auth/login',
-		failureFlash: true
-	}),
+router.post('/login',
+            passport.authenticate('local', {
+			successReturnToOrRedirect: '/dashboard',
+			failureRedirect: '/Auth/login',
+			failureFlash: true
+		}),
 	function(req, res) {
 		res.redirect('/');
 	}
  );
 
-router.get('/logout', function(req, res) {
-	req.logout();
+//  router.get('/signout',function(req,res){    
+//     if (!req.isAuthenticated()){
+// 		res.redirect('Auth/login');
+// 	}
+// 	 else {
+// 	res.render('/dashboard',{
+// 		layout: false
+// 	});
+// }
+// });
 
-	req.flash('success_msg', 'You are logged out');
+// Signing using Facebook
+passport.use(new FacebookStrategy({
+    clientID: configAuth.facebookAuth.clientID,
+    clientSecret: configAuth.facebookAuth.clientSecret,
+    callbackURL: configAuth.facebookAuth.callbackURL
+  },
+  function(accessToken, refreshToken, profile, done) {
+   Process.nextTick(function(){
+	   User.findOne({'facebook.id':profile.id}, function (err, user) {
+		   if(err)
+		   return done(err);
+		   if (user)
+		   return done(null, user);
+		   else{
+			   var newUser = new User();
+				   newUser.facebook.id = profile.id,
+				   newUser.facebook.token = accessToken,
+				   newUser.facebook.name = profile.name.givenName +' '+ profile.name.familyName,
+				   newUser.facebook.email = profile.emails[0].value;
 
-	res.redirect('/Auth/login');
-});
+				   newUser.save(function(err){
+					   if(err)
+					   throw err;
+					   return done(null, newUser);
+				   });
 
-// FORGOT PASSWORD
-router.get('/forgotpassword', function(req, res) {
-	res.render('Auth/forgotpassword',{
-        layout: false
-    });
-});
-router.post('/resetpage', (req, res, next) => {
-	const token = randomstring.generate(50);
-	User.findOneAndUpdate({ email: req.body.email }, { $set: { token: token } })
-	.exec()
-	.then(result => {
-		if(!result) {
-			return res.status(400).json({
-				message: 'Email doesn\'t exists..'
-			});
-		}
-
-		Utils.sendMail({
-			to: 'reply.vipinrai@gmail.com',//req.body.email,
-			subject: 'Reset Password',
-			message: { token: token, email: req.body.email },
-			template: 'resetpage'
-		});
-		return res.status(200).json({
-			message: 'Verification email has been sent.'
-		});
-	})
-	.catch(err => {
-		return res.status(500).json({
-			message: 'Email doesn\'t exists..'
-		});
+		   }
+	   });
 	});
-});
+  }
+));
+
+router.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email']}));
+router.get('/auth/facebook/callback',
+ passport.authenticate('facebook', { successRedirect: '/profile',
+									  failureRedirect: '/auth/login' }));
+									  
 
 module.exports = router;

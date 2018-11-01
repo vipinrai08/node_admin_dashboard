@@ -8,21 +8,29 @@
   <h3>
     New User
   </h3>
+  
 <form action="/users/add" method="post" name="form1">
   <div class="box-body">
       <div class="form-group">
           <label>Name</label>
-          <input id="name" type="text" name="name" placeholder="name" class="form-control" maxlength="15" />
+          <input id="name" type="text" name="name" placeholder="name" class="form-control" maxlength="15"/>
         </div>
         <div class="form-group">
           <label>Age</label>
-          <input type="text" name="age" placeholder=" age" class="form-control"  />
+          <input type="text" name="age" placeholder=" age" class="form-control"/>
        </div>
        <div class="form-group">
          <label>Email</label>
-          <input type="text" name="email" placeholder="email" class="form-control"  />
+          <input type="text" name="email" placeholder="email" class="form-control"/>
         </div>
        </div>
           <input type="submit" name="Submit" placeholder="Add" class="btn btn-primary"/>
+          <div class="col-xs-12">
+                 {{#if errors }}
+                    {{#each errors }}
+                       <p class="alert alert-danger">{{ this.msg }}</p>
+                    {{/each}}
+                  {{/if}}
+        </div>
 </form>
 </section>

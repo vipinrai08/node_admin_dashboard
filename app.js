@@ -11,7 +11,7 @@ var methodOverride = require('method-override')
 var User = require('./models/users');
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte');
+mongoose.connect('mongodb://localhost:27017/adminlte');
 var db = mongoose.connection;
 // Init App
 var app = express();
@@ -41,11 +41,22 @@ app.use(methodOverride(function (req, res) {
 //express session
 app.use(
 	expressSession({
-		secret: 'secret',
-		saveUninitialized: false,
-		resave: true,
+		key: 'user_sid',
+        secret: 'somerandonstuffs',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+        expires: 600000
+    }
 	})
 );
+app.use((req, res, next) => {
+    if (req.cookies.user_sid && !req.session.user) {
+        res.clearCookie('user_username');        
+    }
+    next();
+});
+
 
 app.use(function(req, res, next) {
 	if (!req.session) {
@@ -146,11 +157,47 @@ app.use('/categories', categories);
 app.use('/orders', orders);
 
 
-app.get('/', function(req,res){
-  res.render('Auth/login', {
-	  layout : false
-  });
+
+app.get('/', function(req, res) {
+	if (req.isAuthenticated()){
+		res.redirect('/dashboard');
+	}
+	 else {
+	res.render('Auth/login',{
+		layout: false
+	});
+}
 });
+
+// app.get('/', function(req,res){
+//   res.render('Auth/login', {
+// 	  layout : false
+//   });
+// });
+
+
+app.use(function(req, res, next){
+  res.status('404', {layout: 'false'});
+
+  // respond with html page
+  if (req.accepts('hbs')) {
+    res.render('404', { url: req.url });
+    return;
+  }
+
+  // respond with json
+  if (req.accepts('json')) {
+    res.send({ 
+		error: 'Not found',
+		layout: false
+	 });
+    return;
+  }
+
+  // default to plain-text. send()
+  res.type('txt').send('Not found');
+});
+
 
 // Set Port
 app.set('port', process.env.PORT || 3000);

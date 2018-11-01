@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
 const mongoose = require('mongoose');
- mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte');
+ mongoose.connect('mongodb://localhost:27017/adminlte');
 var ObjectId = require('mongodb').ObjectId
 
 // router.get('/products', (req, res) => {
@@ -13,8 +13,9 @@ function ensureAuthenticated(req, res, next){
 	if (req.isAuthenticated()){
 		return next();
 	}
-	res.redirect('/Auth/login');
+    res.redirect('/Auth/login');
 }
+
 
 router.get('/', ensureAuthenticated, (req, res) =>{
    Product.find()
@@ -43,6 +44,7 @@ router.post('/add', (req, res)=>{
     req.checkBody('date', 'Date is required').notEmpty();
  
     var errors = req.validationErrors();
+    console.log(errors)
     if(errors){
        res.redirect('/products/add');
     } else
