@@ -16,6 +16,7 @@ function ensureAuthenticated(req, res, next){
 	}
 	res.redirect('/Auth/login');
 }
+
 router.get('/',ensureAuthenticated,(req, res) =>{
    User.find()
     .select("name age email")
@@ -38,6 +39,7 @@ router.get('/add', (req, res)=>{
 })
 
 router.post('/add', (req, res)=>{
+    
     req.checkBody('name', 'Name is required').notEmpty();
     req.checkBody('age', 'Age is required').isNumeric();
     req.checkBody('email', 'Email does not appear to be valid').isEmail();

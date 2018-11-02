@@ -112,16 +112,16 @@ router.post('/login',
 	}
  );
 
-//  router.get('/signout',function(req,res){    
-//     if (!req.isAuthenticated()){
-// 		res.redirect('Auth/login');
-// 	}
-// 	 else {
-// 	res.render('/dashboard',{
-// 		layout: false
-// 	});
-// }
-// });
+ router.get('/signout',function(req,res){    
+    if (!req.isAuthenticated()){
+		res.redirect('Auth/login');
+	}
+	 else {
+	res.render('/dashboard',{
+		layout: false
+	});
+}
+});
 
 // Signing using Facebook
 passport.use(new FacebookStrategy({

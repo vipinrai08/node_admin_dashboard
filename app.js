@@ -132,21 +132,17 @@ app.post('/register', function(req, res) {
 /*
     Website routes
 */
-// var login = require('./routes/login');
 var profile = require('./routes/profile');
 var lockscreen = require('./routes/lockscreen');
-// var register = require('./routes/register');
 var dashboard = require('./routes/dashboard');
 var users =require('./routes/users');
 var Auth = require('./routes/Auth');
 var products = require('./routes/products');
 var categories = require('./routes/categories');
 var orders = require('./routes/orders');
+var contact = require('./routes/contact');
+var invoice = require('./routes/invoice');
 
-
-
-// app.use('/login', login);
-// app.use('/register', register);
 app.use('/dashboard',dashboard);
 app.use('/profile', profile);
 app.use('/lockscreen', lockscreen);
@@ -155,7 +151,8 @@ app.use('/Auth', Auth);
 app.use('/products', products);
 app.use('/categories', categories);
 app.use('/orders', orders);
-
+app.use('/contact', contact);
+app.use('/invoice', invoice);
 
 
 app.get('/', function(req, res) {
@@ -169,33 +166,25 @@ app.get('/', function(req, res) {
 }
 });
 
-// app.get('/', function(req,res){
-//   res.render('Auth/login', {
-// 	  layout : false
-//   });
-// });
-
-
-app.use(function(req, res, next){
-  res.status('404', {layout: false});
-
-  // respond with html page
-//   if (req.accepts('hbs')) {
-//     res.render('404', { url: req.url });
-//     return;
-//   }
-
-  // respond with json
-  if (req.accepts('json')) {
-    res.send('Sorry, the page not found');
-    return;
-  }
-
-  // default to plain-text. send()
-  res.type('txt').send('Not found');
+app.get('/', function(req,res){
+  res.render('Auth/login', {
+	  layout : false
+  });
 });
 
+app.get(['/dashboard', '/orders', '/products', '/users', '/invoice', '/contact'], function (req, res) {
+	res.send('');
+  });
+  
+  app.use(function(req, res) {
+	res.status(400);
+   res.render('404.hbs', {
+	   title: '404: File Not Found',
+	   layout: false
+	});
+});
 
+  
 // Set Port
 app.set('port', process.env.PORT || 3000);
 

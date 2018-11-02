@@ -15,13 +15,6 @@ router.get('/', ensureAuthenticated, function(erq, res){
 	});
 });
 
-
-
-
-
-
-
-
 // router.post('/',(req, res) =>{
 //     res.render('dashboard', {
 //          title: 'Dashboard'
