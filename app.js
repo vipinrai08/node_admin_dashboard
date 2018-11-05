@@ -142,6 +142,7 @@ var categories = require('./routes/categories');
 var orders = require('./routes/orders');
 var contact = require('./routes/contact');
 var invoices = require('./routes/invoices');
+var payment = require('./routes/payment');
 
 app.use('/dashboard',dashboard);
 app.use('/profile', profile);
@@ -153,6 +154,7 @@ app.use('/categories', categories);
 app.use('/orders', orders);
 app.use('/contact', contact);
 app.use('/invoices', invoices);
+app.use('/payment', payment);
 
 
 app.get('/', function(req, res) {
@@ -172,7 +174,7 @@ app.get('/', function(req,res){
   });
 });
 
-app.get(['/dashboard', '/orders', '/products', '/users', '/invoices', '/contact'], function (req, res) {
+app.get(['/dashboard', '/orders', '/products', '/users', '/invoices', '/contact', '/payment'], function (req, res) {
 	res.send('');
   });
   

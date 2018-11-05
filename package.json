@@ -38,7 +38,8 @@
     "passport-facebook": "^2.1.1",
     "passport-http": "*",
     "passport-local": "*",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "stripe": "^6.13.0"
   },
   "devDependencies": {}
 }

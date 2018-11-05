@@ -15,7 +15,7 @@ function ensureAuthenticated(req, res, next){
 }
 router.get('/', ensureAuthenticated, (req, res) => {
     Invoice.find()
-    .select("name email contactnumber city address zipcode cardname cardnumber expmonth expyear cvv")
+    .select("name email contactnumber city address zipcode")
     .exec()
     .then(invoices => {console.log(invoices)
     res.render('invoices/list', {invoices})
@@ -42,14 +42,8 @@ router.post('/add', (req, res) => {
     req.checkBody('city', 'City is required').notEmpty();
     req.checkBody('address', 'Address is required').notEmpty();
     req.checkBody('zipcode','Zipcode is required').notEmpty();
-    req.checkBody('cardname', 'Cardname is required').notEmpty();
-    req.checkBody('cardnumber', 'Cardnumber is required').notEmpty();
-    req.checkBody('expmonth', 'Expmonth is required').notEmpty();
-    req.checkBody('expyear', 'Expyear is required').notEmpty();
-    req.checkBody('cvv', 'Cvv is required').notEmpty();
 
     var errors = req.validationErrors();
-    console.log(errors)
     if(errors) {
         res.redirect('/invoices/add');
     }
@@ -61,19 +55,14 @@ router.post('/add', (req, res) => {
             contactnumber: req.body.contactnumber,
             city: req.body.city,
             address: req.body.address,
-            zipcode: req.body.zipcode,
-            cardname: req.body.cardname,
-            cardnumber: req.body.cardnumber,
-            expmonth: req.body.expmonth,
-            expyear: req.body.expyear,
-            cvv: req.body.cvv
+            zipcode: req.body.zipcode
         });
     
         invoice
         .save()
         .then(result => {
             console.log(result);
-            res.redirect('/invoices'),
+            res.redirect('/payment'),
             req.flash('Invoice created');
         })
         .catch(err => {
@@ -110,12 +99,7 @@ router.put('/edit/:id', (req, res)=>{
             contactnumber: req.body.contactnumber,
             city: req.body.city,
             address: req.body.address,
-            zipcode: req.body.zipcode,
-            cardname: req.body.cardname,
-            cardnumber: req.body.cardnumber,
-            expmonth: req.body.expmonth,
-            expyear: req.body.expyear,
-            cvv: req.body.cvv
+            zipcode: req.body.zipcode
         }
     })
     .exec()

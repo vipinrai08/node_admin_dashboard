@@ -61,7 +61,7 @@ router.post('/add', (req, res)=>{
         .save()
         .then(result => {
            console.log(result);
-          res.redirect('/orders'),
+          res.redirect('/invoices/add'),
            req.flash('Orders Created');
         })
            .catch(err =>{
@@ -104,7 +104,7 @@ router.put('/edit/:id', (req, res)=>{
     })
     .exec()
     .then(res => {
-        res.redirect('/orders');
+        res.redirect('/invoices/add');
         req.flash('Order Updated');
     })
     .catch(err => {

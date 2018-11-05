@@ -28,11 +28,11 @@
       <th>City</th>
       <th>Address</th>
       <th>Zipcode</th>
-      <th>Cardname</th>
+      {{!-- <th>Cardname</th>
       <th>Cardnumber</th>
       <th>Expmonth</th>
       <th>Expyear</th>
-      <th>Cvv</th>
+      <th>Cvv</th> --}}
       <th>Action</th>
     </tr>
     {{#each invoices}}
@@ -43,11 +43,11 @@
       <td>{{this.city}} </td>
       <td>{{this.address}} </td>
       <td>{{this.zipcode}} </td>
-      <td>{{this.cardname}} </td>
+      {{!-- <td>{{this.cardname}} </td>
       <td>{{this.cardnumber}} </td>
       <td>{{this.expmonth}} </td>
       <td>{{this.expyear}} </td>
-      <td>{{this.cvv}} </td>
+      <td>{{this.cvv}} </td> --}}
       <td>
         <div style="float:left">
           <a href="/invoices/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
