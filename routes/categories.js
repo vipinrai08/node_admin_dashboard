@@ -43,6 +43,8 @@ router.post('/add', (req, res)=>{
     if(errors){
        res.redirect('/categories/add');
     }
+ else
+{
     var categories = new Categories({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -58,6 +60,7 @@ router.post('/add', (req, res)=>{
                console.log(err);
                res.redirect('/categories/add')
            });
+        }
         
 })
 

@@ -141,7 +141,7 @@ var products = require('./routes/products');
 var categories = require('./routes/categories');
 var orders = require('./routes/orders');
 var contact = require('./routes/contact');
-var invoice = require('./routes/invoice');
+var invoices = require('./routes/invoices');
 
 app.use('/dashboard',dashboard);
 app.use('/profile', profile);
@@ -152,7 +152,7 @@ app.use('/products', products);
 app.use('/categories', categories);
 app.use('/orders', orders);
 app.use('/contact', contact);
-app.use('/invoice', invoice);
+app.use('/invoices', invoices);
 
 
 app.get('/', function(req, res) {
@@ -172,7 +172,7 @@ app.get('/', function(req,res){
   });
 });
 
-app.get(['/dashboard', '/orders', '/products', '/users', '/invoice', '/contact'], function (req, res) {
+app.get(['/dashboard', '/orders', '/products', '/users', '/invoices', '/contact'], function (req, res) {
 	res.send('');
   });
   

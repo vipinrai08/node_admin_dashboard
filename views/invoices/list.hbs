@@ -1,0 +1,60 @@
+
+<style>
+  .table-design {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .table-design td, .table-design th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  .table-design tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+</style>
+<section class="content-header">
+  <h1>
+   Invoices
+  </h1>
+<p>Below you will see list of Invoices.</p><br/>
+<a style="border: 1px solid grey; padding: 10px; margin: 10px 0px; width: 88px; display: block; text-align: center; background-color: #1e282c; color: #fff; font-weight: 800" href="/invoices/add/">Add</a>
+<table width="80%" border="0" class="table-design">
+  <tbody>
+    <tr style="text-align:left; background-color:#CCC">
+      <th>Name</th>
+      <th>Email</th>
+      <th>Contactnumber</th>
+      <th>City</th>
+      <th>Address</th>
+      <th>Zipcode</th>
+      <th>Cardname</th>
+      <th>Cardnumber</th>
+      <th>Expmonth</th>
+      <th>Expyear</th>
+      <th>Cvv</th>
+      <th>Action</th>
+    </tr>
+    {{#each invoices}}
+    <tr>
+      <td>{{this.name}} </td>
+      <th>{{this.email}}</th>
+      <td>{{this.contactnumber}} </td>
+      <td>{{this.city}} </td>
+      <td>{{this.address}} </td>
+      <td>{{this.zipcode}} </td>
+      <td>{{this.cardname}} </td>
+      <td>{{this.cardnumber}} </td>
+      <td>{{this.expmonth}} </td>
+      <td>{{this.expyear}} </td>
+      <td>{{this.cvv}} </td>
+      <td>
+        <div style="float:left">
+          <a href="/invoices/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
+          <a href="/invoices/delete/{{this.id}}">Delete</a> 
+          </div>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

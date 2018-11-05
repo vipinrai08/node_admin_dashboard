@@ -43,7 +43,7 @@ router.post('/add', (req, res)=>{
  
     var errors = req.validationErrors();
     if(errors){
-       res.redirect('/order/add');
+       res.redirect('/orders/add');
     } else
     {
     var order = new Order({
