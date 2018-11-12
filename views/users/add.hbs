@@ -36,33 +36,49 @@
   </h3>
   
 <form action="/users/add" method="post" name="form1">
+<div class="col-xs-12">
+    {{!-- <div class="alert-danger" style="position: relative">
+      <span style="position: absolute; top: 5; right: 12">x</span>
+      {{#if err }}
+        {{#each err }}
+          <p style="color: #fff">{{ this.msg }}</p>
+        {{/each}}
+      {{/if}}
+    </div> --}}
+  </div>
   <div class="box-body">
    
-      <div class="form-group">
+        <div class="form-group">
           <label>Name*</label>
           <input id="name" type="text" name="name" class="form-control" placeholder="Please enter your name"/>
+          <p style="color: red"> &nbsp;
+            {{#if err.name}}
+              {{err.name}}
+            {{/if}}
+          </p>
         </div>
+        
         <div class="form-group">
           <label>Age*</label>
           <input type="text" name="age" placeholder=" please enter your age" class="form-control"/>
+          <p style="color: red"> &nbsp;
+            {{#if err.age}}
+              {{err.age}}
+            {{/if}}
+          </p>
        </div>
-       <div class="form-group">
-         <label>Email*</label>
+        <div class="form-group">
+          <label>Email*</label>
           <input type="text" name="email" placeholder="please enter your email" class="form-control"/>
+          <p style="color: red"> &nbsp;
+            {{#if err.email}}
+              {{err.email}}
+            {{/if}}
+          </p>
         </div>
        </div>
         
           <input type="submit" name="Submit" placeholder="Add" class="btn btn-primary"/>
-             <p class="text-muted" style="color:red;">
-                            <strong>*</strong> These fields are required.
-                        </p>
-           <div class="col-xs-12">
-                 {{#if err }}
-                    {{#each err }}
-                      <p style="color:red">{{ this.msg }}</p>
-                    {{/each}}
-                  {{/if}}
-                  </div>
         </div>
 </form>
 </section>

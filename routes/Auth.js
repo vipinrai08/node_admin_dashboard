@@ -49,9 +49,18 @@ router.post('/register', function(req, res) {
 	var err = req.validationErrors();
 	console.log(err)
 	if (err) {
+		var newErr = {};
+		err && err.length ? err.map(item => {
+            newErr = {
+                ...newErr,
+                [item.param]: item.msg
+            }
+        }) : {}
+
+        console.log(newErr, 'newErr');
 		res.render('Auth/register', {
 			layout: false,
-			err: err
+			err: newErr
 		});
 	} else {
 		

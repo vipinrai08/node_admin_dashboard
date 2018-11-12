@@ -37,25 +37,60 @@
  
 
 <form method="post" action="/Auth/register">
+{{!-- <div class="col-xs-12">
+    <div class="alert alert-danger" style="position: relative">
+      <span style="position: absolute; top: 5; right: 12">x</span>
+      {{#if err }}
+        {{#each err }}
+          <p style="color: #fff">{{ this.msg }}</p>
+        {{/each}}
+      {{/if}}
+    </div>
+  </div> --}}
   <div class="form-group">
     <label>Name</label>
     <input type="text" class="form-control" placeholder="Name" name="name" >
+   <p style="color: red"> &nbsp;
+            {{#if err.name}}
+              {{err.name}}
+            {{/if}}
+          </p>
   </div> 
   <div class="form-group">
     <label>Username</label>
     <input type="text" class="form-control" placeholder="Username" name="username">
+    <p style="color: red"> &nbsp;
+            {{#if err.username}}
+              {{err.username}}
+            {{/if}}
+          </p>
   </div>
   <div class="form-group">
     <label>Email</label>
     <input type="text" class="form-control" placeholder="Email" name="email">
+    <p style="color: red"> &nbsp;
+            {{#if err.email}}
+              {{err.email}}
+            {{/if}}
+          </p>
   </div>
      <div class="form-group">
         <label>Password</label>
          <input type="password" class="form-control" placeholder="Password" name="password">
+         <p style="color: red"> &nbsp;
+            {{#if err.password}}
+              {{err.password}}
+            {{/if}}
+          </p>
      </div>
      <div class="form-group">
         <label>confirm Password</label>
          <input type="password" class="form-control" placeholder="confirm Password" name="confirm password">
+         <p style="color: red"> &nbsp;
+            {{#if err.confirmpassword}}
+              {{err.confirmpassword}}
+            {{/if}}
+          </p>
      </div>
      <div class="row">
         <div class="col-xs-8">
@@ -66,13 +101,13 @@
                <button type="submit" class="btn btn-default">Submit</button>
           </div>
         </div>
-         <div class="col-xs-12">
+         {{!-- <div class="col-xs-12">
                  {{# if err }}
                     {{# each err }}
                        <p style="color:red">{{ this.msg }}</p>
                     {{/each}}
                   {{/if}}
-        </div>
+        </div> --}}
         </div>
         </div>
    </form>

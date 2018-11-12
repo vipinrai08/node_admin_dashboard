@@ -46,8 +46,17 @@ router.post('/add', (req, res)=>{
     var err = req.validationErrors();
 	console.log(err)
 	if (err) {
+        let newErr = {};
+        err && err.length ? err.map(item => {
+            newErr = {
+                ...newErr,
+                [item.param]: item.msg
+            }
+        }) : {}
+
+        console.log(newErr, 'newErr');
 		res.render('products/add', {
-			err: err
+			err: newErr
         });
     } else
     {

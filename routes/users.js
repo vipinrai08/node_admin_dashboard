@@ -44,20 +44,29 @@ router.post('/add', (req, res)=>{
     req.checkBody('age', 'Age is required').isNumeric();
     req.checkBody('email', 'Email does not appear to be valid').isEmail();
     var err = req.validationErrors();
+
 	console.log(err)
 	if (err) {
+        let newErr = {};
+        err && err.length ? err.map(item => {
+            newErr = {
+                ...newErr,
+                [item.param]: item.msg
+            }
+        }) : {}
+
+        console.log(newErr, 'newErr');
 		res.render('users/add', {
-			err: err
+			err: newErr
         });
-    }
-    else{
-    var user = new User({
-        _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        age: req.body.age,
-        email: req.body.email
-    
-    });
+    } else{
+        var user = new User({
+            _id: new mongoose.Types.ObjectId(),
+            name: req.body.name,
+            age: req.body.age,
+            email: req.body.email
+
+        });
     
        user
         .save()
