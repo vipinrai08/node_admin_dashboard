@@ -43,10 +43,12 @@ router.post('/add', (req, res)=>{
     req.checkBody('name', 'Name is required').notEmpty();
     req.checkBody('age', 'Age is required').isNumeric();
     req.checkBody('email', 'Email does not appear to be valid').isEmail();
-    var errors = req.validationErrors();
-    console.log(errors)
-    if(errors){
-       res.redirect('/users/add');
+    var err = req.validationErrors();
+	console.log(err)
+	if (err) {
+		res.render('users/add', {
+			err: err
+        });
     }
     else{
     var user = new User({

@@ -43,10 +43,12 @@ router.post('/add', (req, res)=>{
     req.checkBody('price', 'Price is required').isNumeric();
     req.checkBody('date', 'Date is required').notEmpty();
  
-    var errors = req.validationErrors();
-    console.log(errors)
-    if(errors){
-       res.redirect('/products/add');
+    var err = req.validationErrors();
+	console.log(err)
+	if (err) {
+		res.render('products/add', {
+			err: err
+        });
     } else
     {
     var product = new Product({

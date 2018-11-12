@@ -16,12 +16,12 @@
         </div>
        </div>
           <input type="submit" name="Submit" placeholder="Add" class="btn btn-primary"/>
-           <div class="col-xs-12">
-                 {{#if errors }}
-                    {{#each errors }}
-                       <p class="alert alert-danger">{{ this.msg }}</p>
+          <div class="col-xs-12">
+                 {{#if err }}
+                    {{#each err }}
+                      <p style="color:red">{{ this.msg }}</p>
                     {{/each}}
                   {{/if}}
-        </div>
+                  </div>
 </form>
 </section>

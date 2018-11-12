@@ -57,8 +57,8 @@
                             <strong>*</strong> These fields are required.
                         </p>
            <div class="col-xs-12">
-                 {{#if errors }}
-                    {{#each errors }}
+                 {{#if err }}
+                    {{#each err }}
                       <p style="color:red">{{ this.msg }}</p>
                     {{/each}}
                   {{/if}}

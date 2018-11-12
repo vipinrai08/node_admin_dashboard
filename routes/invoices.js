@@ -43,9 +43,12 @@ router.post('/add', (req, res) => {
     req.checkBody('address', 'Address is required').notEmpty();
     req.checkBody('zipcode','Zipcode is required').notEmpty();
 
-    var errors = req.validationErrors();
-    if(errors) {
-        res.redirect('/invoices/add');
+    var err = req.validationErrors();
+	console.log(err)
+	if (err) {
+		res.render('invoices/add', {
+			err: err
+        });
     }
     else{
         var invoice = new Invoice({
@@ -61,7 +64,7 @@ router.post('/add', (req, res) => {
         invoice
         .save()
         .then(result => {
-            console.log(result);
+            console.log(result);        
             res.redirect('/payment'),
             req.flash('Invoice created');
         })

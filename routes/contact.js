@@ -16,6 +16,19 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 });
 
 router.post('/', function(req, res, next) {
+
+    req.checkBody('name', 'Name is required').notEmpty();
+    req.checkBody('email', 'Email does not appear to be valid').isEmail();
+    // req.checkBody('contact number', 'Contact number is required').isNumeric();
+
+    var err = req.validationErrors();
+	console.log(err)
+	if (err) {
+		res.render('contact', {
+			err: err
+        });
+    }
+    else{
     var transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -41,7 +54,8 @@ router.post('/', function(req, res, next) {
         res.redirect('/contact');
     }
   });
-  });
+}
+});
   
   
 //   transporter.sendMail(mailOptions, function(error, info){

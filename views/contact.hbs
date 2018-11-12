@@ -55,6 +55,13 @@
              </p>
 
         </div>
+        <div class="col-xs-12">
+                 {{# if err }}
+                    {{# each err }}
+                       <p style="color:red">{{ this.msg }}</p>
+                    {{/each}}
+                  {{/if}}
+        </div>
      </form>
      </section>
      </head>

@@ -41,9 +41,12 @@ router.post('/add', (req, res)=>{
     req.checkBody('price', 'Price is required').isNumeric();
     req.checkBody('date', 'Date is required').notEmpty();
  
-    var errors = req.validationErrors();
-    if(errors){
-       res.redirect('/orders/add');
+    var err = req.validationErrors();
+	console.log(err)
+	if (err) {
+		res.render('orders/add', {
+			err: err
+        });
     } else
     {
     var order = new Order({

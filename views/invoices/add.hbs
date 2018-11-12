@@ -62,39 +62,18 @@
 		  <label>Zipcode*</label>
           <input type="number" name="zipcode" placeholder="please enter your zipcode" class="form-control"/>
         </div>
-		 {{!-- <h3>Payment</h3>
-            <label for="fname">Accepted Cards</label>
-            <div class="icon-container">
-              <i class="fa fa-cc-visa" style="color:navy;"></i>
-              <i class="fa fa-cc-amex" style="color:blue;"></i>
-              <i class="fa fa-cc-mastercard" style="color:red;"></i>
-              <i class="fa fa-cc-discover" style="color:orange;"></i>
-            </div>
-       <div class="form-group">
-			 <label>cardname*</label>
-          <input type="text" name="cardname" placeholder="please enter your cardname" class="form-control"/>
-          </div>
-       <div class="form-group">
-		  <label>cardnumber*</label>
-          <input type="number" name="cardnumber" placeholder="please enter your cardnumber" class="form-control"/>
-          </div>
-       <div class="form-group">
-        <label>expmonth*</label>
-          <input type="text" name="expmonth" placeholder="month" class="form-control"/>
-          </div>
-       <div class="form-group">
-            <label>expyear*</label>
-          <input type="number" name="expyear" placeholder="year" class="form-control"/>
-          </div>
-        <div class="form-group">
-            <label>CVV*</label>
-          <input type="number" name="cvv" placeholder="cvv" class="form-control"/>
-          </div> --}}
 		  <label>
           <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
         </label>
 		<div>
           <input type="submit"  name="Submit" placeholder="Add" class="btn btn-primary"/>
+            <div class="col-xs-12">
+                 {{#if err }}
+                    {{#each err }}
+                      <p style="color:red">{{ this.msg }}</p>
+                    {{/each}}
+                  {{/if}}
+                  </div>
         </div>
         </div>
 </form>

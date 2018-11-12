@@ -38,10 +38,12 @@ router.get('/add', (req, res)=>{
 router.post('/add', (req, res)=>{
     req.checkBody('name', 'Name is required').notEmpty();
     
-    var errors = req.validationErrors();
-    console.log(errors)
-    if(errors){
-       res.redirect('/categories/add');
+    var err = req.validationErrors();
+	console.log(err)
+	if (err) {
+		res.render('categories/add', {
+			err: err
+        });
     }
  else
 {
