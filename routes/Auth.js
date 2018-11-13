@@ -7,7 +7,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var User = require('../models/users');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://<admin>:<admin123>@ds135433.mlab.com:35433/adminlte');
+mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte');
 const { isEmpty } = require('lodash');
 const Validator = require('is_js');
 
