@@ -6,6 +6,7 @@ var exphbs = require('express-handlebars');
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var expressSession = require('express-session');
+const fileUpload = require('express-fileupload');
 var passport = require('passport');
 var methodOverride = require('method-override')
 var User = require('./models/users');
@@ -91,6 +92,8 @@ app.use(
 
 // Connect Flash
 app.use(flash());
+
+ app.use(fileUpload());
 
 // Global Vars
 app.use(function(req, res, next) {
