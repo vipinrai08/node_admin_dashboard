@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const mongoose = require('mongoose');
- const Joi = require('joi')
- mongoose.connect('mongodb://localhost:27017/adminlte');
-var ObjectId = require('mongodb').ObjectId
+mongoose.connect('mongodb://localhost:27017/adminlte');
+// var ObjectId = require('mongodb').ObjectId
+const { isEmpty } = require('lodash');
+const Validator = require('is_js');
+
 
 
 // router.get('/users', (req, res) => {
@@ -39,25 +41,30 @@ router.get('/add', (req, res)=>{
 })
 
 router.post('/add', (req, res)=>{
+
+    let { isValid, errors} = validator(req.body);
+    console.log(isValid, errors)
     
-    req.checkBody('name', 'Name is required').notEmpty();
-    req.checkBody('age', 'Age is required').isNumeric();
-    req.checkBody('email', 'Email does not appear to be valid').isEmail();
-    var err = req.validationErrors();
+    // req.checkBody('name', 'Name is required').notEmpty();
+    // req.checkBody('age', 'Age is required').notEmpty();
+    // req.checkBody('age', 'Age should be in numeric form').isNumeric();
+    // req.checkBody('email', 'Email does not appear to be valid').isEmail();
+    // var err = req.validationErrors();
 
-	console.log(err)
-	if (err) {
-        let newErr = {};
-        err && err.length ? err.map(item => {
-            newErr = {
-                ...newErr,
-                [item.param]: item.msg
-            }
-        }) : {}
+	// console.log(err)
+	if (!isValid) {
+        // let newErr = {};
+        // err && err.length ? err.map(item => {
+        //     newErr = {
+        //         ...newErr,
+        //         [item.param]: item.msg
+        //     }
+        // }) : {}
 
-        console.log(newErr, 'newErr');
+        // // console.log(newErr, 'newErr');
 		res.render('users/add', {
-			err: newErr
+            err: errors,
+            user: { name: req.body.name, age: req.body.age, email: req.body.email }
         });
     } else{
         var user = new User({
@@ -130,5 +137,29 @@ router.get('/delete/:id', (req,res)=>{
         res.redirect('users/list')
     });
 })
+
+function validator(data) {
+    let errors = {};
+
+    if(Validator.empty(data.name)) {
+        errors.name = "Name is required!"
+    }
+    if(Validator.empty(data.age)) {
+        errors.age = "Age is required!"
+    }
+
+    if(Validator.not.empty(data.age) && !parseInt(data.age)) {
+        errors.age = "Age should be in numeric form!"
+    }
+
+    if(Validator.empty(data.email) && !Validator.email(data.email)) {
+        errors.email = "Email does not appear valid!"
+    }
+
+    return {
+        isValid: isEmpty(errors),
+        errors
+    }
+}
  
 module.exports = router;

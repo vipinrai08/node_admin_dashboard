@@ -4,6 +4,8 @@ const Invoice = require('../models/invoice');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/adminlte');
 var ObjectId = require('mongodb').ObjectId
+const { isEmpty } = require('lodash');
+const Validator = require('is_js');
 
 
 
@@ -35,28 +37,31 @@ router.get('/add', (req, res) => {
 })
 
 router.post('/add', (req, res) => {
-     
-    req.checkBody('name', 'Name is required').notEmpty();
-    req.checkBody('email', 'Email does not appear to be valid').isEmail();
-    req.checkBody('contactnumber', 'Contactnumber is required').isNumeric();
-    req.checkBody('city', 'City is required').notEmpty();
-    req.checkBody('address', 'Address is required').notEmpty();
-    req.checkBody('zipcode','Zipcode is required').notEmpty();
+    let { isValid, errors} = validator(req.body);
+    console.log(isValid, errors)
+    // req.checkBody('name', 'Name is required').notEmpty();
+    // req.checkBody('email', 'Email does not appear to be valid').isEmail();
+    // req.checkBody('contactnumber', 'Contactnumber is required').isNumeric();
+    // req.checkBody('city', 'City is required').notEmpty();
+    // req.checkBody('address', 'Address is required').notEmpty();
+    // req.checkBody('zipcode','Zipcode is required').notEmpty();
 
-    var err = req.validationErrors();
-	console.log(err)
-	if (err) {
-        var newErr = {};
-        err && err.length ? err.map(item => {
-            newErr = {
-                ...newErr,
-                [item.param]: item.msg
-            }
-        }) : {}
+    // var err = req.validationErrors();
+	// console.log(err)
+	   if (!isValid) {
+    //     var newErr = {};
+    //     err && err.length ? err.map(item => {
+    //         newErr = {
+    //             ...newErr,
+    //             [item.param]: item.msg
+    //         }
+    //     }) : {}
 
-        console.log(newErr, 'newErr');
+    //     console.log(newErr, 'newErr');
 		res.render('invoices/add', {
-			err: newErr
+            err: errors,
+            invoice: { name: req.body.name, email: req.body.email, contactnumber: req.body.contactnumber,
+                 city: req.body.city, address: req.body.address, zipcode: req.body.zipcode}
         });
     }
     else{
@@ -136,5 +141,40 @@ router.get('/delete/:id', (req,res)=>{
         res.redirect('invoices/list')
     });
 })
+
+function validator(data) {
+    let errors = {};
+    
+    if (Validator.empty(data.name)) {
+        errors.name = "Name is required!"
+    }
+
+    if(Validator.empty(data.email) && !Validator.email(data.email)) {
+        errors.email = "Email does not appear valid!"
+    }
+
+    if(Validator.empty(data.contactnumber) && !parseInt(data.contactnumber)) {
+        errors.contactnumber = "Contact number should be in numeric form!"
+    }
+
+    if (Validator.empty(data.city)) {
+        errors.city = "City is required!"
+    }
+
+    if (Validator.empty(data.address)) {
+        errors.address = "Address is required!"
+    }
+
+    if(Validator.empty(data.zipcode) && !parseInt(data.zipcode)) {
+        errors.zipcode = "Zipcode number should be in numeric form!"
+    }
+
+   
+
+    return{
+        isValid: isEmpty(errors),
+        errors
+    }
+}
  
 module.exports = router;

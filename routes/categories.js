@@ -4,6 +4,8 @@ const Categories = require('../models/categories');
 const mongoose = require('mongoose');
  mongoose.connect('mongodb://localhost:27017/adminlte');
 var ObjectId = require('mongodb').ObjectId
+const { isEmpty } = require('lodash');
+const Validator = require('is_js');
 
 // router.get('/categories', (req, res) => {
 //     res.render('categories', {title: 'categories'});
@@ -36,22 +38,26 @@ router.get('/add', (req, res)=>{
     })
 })
 router.post('/add', (req, res)=>{
-    req.checkBody('name', 'Name is required').notEmpty();
+    // req.checkBody('name', 'Name is required').notEmpty();
+    let { isValid, errors} = validator(req.body);
+    console.log(isValid, errors)
     
-    var err = req.validationErrors();
-	console.log(err)
-	if (err) {
-        let newErr = {};
-        err && err.length ? err.map(item => {
-            newErr = {
-                ...newErr,
-                [item.param]: item.msg
-            }
-        }) : {}
+    // var err = req.validationErrors();
+    if (!isValid) {
+	// console.log(err)
+	// if (err) {
+    //     let newErr = {};
+    //     err && err.length ? err.map(item => {
+    //         newErr = {
+    //             ...newErr,
+    //             [item.param]: item.msg
+    //         }
+    //     }) : {}
 
-        console.log(newErr, 'newErr');
+        // console.log(newErr, 'newErr');
 		res.render('categories/add', {
-			err: newErr
+            err: errors,
+            categories: { name: req.body.name}
         });
     }
  else
@@ -121,5 +127,17 @@ router.get('/delete/:id', (req,res)=>{
         res.redirect('categories/list')
     });
 })
+
+function validator(data) {
+    let errors = {};
+
+    if (Validator.empty(data.name)){
+        errors.name = "Name is required!"
+    }
+    return {
+        isValid: isEmpty(errors),
+        errors
+    }
+}
  
 module.exports = router;

@@ -8,6 +8,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var User = require('../models/users');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/adminlte');
+const { isEmpty } = require('lodash');
+const Validator = require('is_js');
 
 
 
@@ -38,29 +40,36 @@ router.post('/register', function(req, res) {
 	var username = req.body.username;
 	var password = req.body.password;
  
+	let { isValid, errors} = validator(req.body);
+    console.log(isValid, errors)
 	// Validation
-	req.checkBody('name', 'Name is required').notEmpty();
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('email', 'Email does not appear to be valid').isEmail();
-	req.checkBody('username', 'Username is required').notEmpty();
-	req.checkBody('password', 'Password is required').notEmpty();
+	// req.checkBody('name', 'Name is required').notEmpty();
+	// req.checkBody('email', 'Email is required').notEmpty();
+	// req.checkBody('email', 'Email does not appear to be valid').isEmail();
+	// req.checkBody('username', 'Username is required').notEmpty();
+	// req.checkBody('password', 'Password is required').notEmpty();
 
 
-	var err = req.validationErrors();
-	console.log(err)
-	if (err) {
-		var newErr = {};
-		err && err.length ? err.map(item => {
-            newErr = {
-                ...newErr,
-                [item.param]: item.msg
-            }
-        }) : {}
+	// var err = req.validationErrors();
+	// console.log(err)
+	if (!isValid) {
+	// if (err) {
+	// 	var newErr = {};
+	// 	err && err.length ? err.map(item => {
+    //         newErr = {
+    //             ...newErr,
+    //             [item.param]: item.msg
+    //         }
+    //     }) : {}
 
-        console.log(newErr, 'newErr');
+    //     console.log(newErr, 'newErr');
 		res.render('Auth/register', {
 			layout: false,
-			err: newErr
+			err: errors,
+			newUser: {name: req.body.name, username: req.body.username, email: req.body.email,
+				password: req.body.password
+
+			}
 		});
 	} else {
 		
@@ -103,7 +112,6 @@ passport.use(
 passport.serializeUser(function(user, done) {
 	done(null, user.id);
 });
-
 passport.deserializeUser(function(id, done) {
 	User.getUserById(id, function(err, user) {
 		done(err, user);
@@ -168,6 +176,32 @@ router.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email
 router.get('/auth/facebook/callback',
  passport.authenticate('facebook', { successRedirect: '/profile',
 									  failureRedirect: '/auth/login' }));
-									  
+
+	function validator(data) {
+	let errors = {};
+	
+	if (Validator.empty(data.name)) {
+		errors.name = "Name is required!"
+	}
+
+	if (Validator.empty(data.username)) {
+		errors.username = "Username is required!"
+	}
+
+	if(Validator.empty(data.email) && !Validator.email(data.email)) {
+		errors.email = "Email does not appear valid!"
+	}
+
+
+	if (Validator.empty(data.password)) {
+		errors.password = "Password is required!"
+	}
+
+	return{
+		isValid: isEmpty(errors),
+		errors
+	}
+}
+	
 
 module.exports = router;

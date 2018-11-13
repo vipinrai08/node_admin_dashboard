@@ -133,7 +133,6 @@ app.post('/register', function(req, res) {
     Website routes
 */
 var profile = require('./routes/profile');
-var lockscreen = require('./routes/lockscreen');
 var dashboard = require('./routes/dashboard');
 var users =require('./routes/users');
 var Auth = require('./routes/Auth');
@@ -146,7 +145,6 @@ var payment = require('./routes/payment');
 
 app.use('/dashboard',dashboard);
 app.use('/profile', profile);
-app.use('/lockscreen', lockscreen);
 app.use('/users', users);
 app.use('/Auth', Auth);
 app.use('/products', products);

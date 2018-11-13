@@ -4,7 +4,8 @@ const Order = require('../models/order');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/adminlte');
 var ObjectId = require('mongodb').ObjectId
-
+const { isEmpty } = require('lodash');
+const Validator = require('is_js');
 // router.get('/orders', (req, res) => {
 //     res.render('orders', {title: 'orders'});
 // });
@@ -36,25 +37,35 @@ router.get('/add', (req, res)=>{
 })
 
 router.post('/add', (req, res)=>{
-    req.checkBody('name', 'Name is required').notEmpty();
-    req.checkBody('categories', 'Categories is required').notEmpty();
-    req.checkBody('price', 'Price is required').isNumeric();
-    req.checkBody('date', 'Date is required').notEmpty();
- 
-    var err = req.validationErrors();
-	console.log(err)
-	if (err) {
-        let newErr = {};
-        err && err.length ? err.map(item => {
-            newErr = {
-                ...newErr,
-                [item.param]: item.msg
-            }
-        }) : {}
+    let { isValid, errors} = validator(req.body);
+    console.log(isValid, errors)
+    // req.checkBody('name', 'Name is required').notEmpty();
+    // req.checkBody('categories', 'Categories is required').notEmpty();
+    // req.checkBody('price', 'Price is required').isNumeric();
+    // req.checkBody('date', 'Date is required').notEmpty();
+    // req.checkBody('email', 'Email does not appear to be valid').isEmail();
+    // req.checkBody('contactnumber', 'Contactnumber is required').isNumeric();
+    // req.checkBody('address', 'Address is required').notEmpty();
 
-        console.log(newErr, 'newErr');
+ 
+    // var err = req.validationErrors();
+    // console.log(err)
+    if (!isValid) {
+	// if (err) {
+    //     let newErr = {};
+    //     err && err.length ? err.map(item => {
+    //         newErr = {
+    //             ...newErr,
+    //             [item.param]: item.msg
+    //         }
+    //     }) : {}
+
+    //     console.log(newErr, 'newErr');
 		res.render('orders/add', {
-			err: newErr
+            err: errors,
+            order: { products: req.body.products, categories: req.body.categories, name: req.body.name, 
+                email: req.body.email, contactnumber: req.body.contactnumber, 
+                address: req.body.address, date: req.body.date}
         });
     } else
     {
@@ -136,4 +147,45 @@ router.get('/delete/:id', (req,res)=>{
         res.redirect('order/list')
     });
 })
+
+function validator(data) {
+    let errors = {};
+    
+    if (Validator.empty(data.products)) {
+        errors.products = "Products is required!"
+    }
+
+    if (Validator.empty(data.categories)) {
+        errors.categories = "Categories is required!"
+    }
+
+    if(Validator.empty(data.price) && !parseInt(data.price)) {
+        errors.price = "Price should be in numeric form!"
+    }
+
+    if (Validator.empty(data.name)) {
+        errors.name = "Name is required!"
+    }
+
+    if(Validator.empty(data.email) && !Validator.email(data.email)) {
+        errors.email = "Email does not appear valid!"
+    }
+
+    if(Validator.empty(data.contactnumber) && !parseInt(data.contactnumber)) {
+        errors.contactnumber = "Contact number should be in numeric form!"
+    }
+
+    if (Validator.empty(data.address)) {
+        errors.address = "Address is required!"
+    }
+
+    if (Validator.empty(data.date)) {
+        errors.date = "Date is required!"
+    }
+
+    return{
+        isValid: isEmpty(errors),
+        errors
+    }
+}
 module.exports = router;

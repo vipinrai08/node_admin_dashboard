@@ -71,20 +71,16 @@
     
         <div class="form-group">
            <label for="Message">Message*</label>
-            <p style="color: red"> &nbsp;
+        </div>
+             <textarea id="message" name="message" placeholder="message for me.." style="width:100%"></textarea>
+               <p style="color: red"> &nbsp;
             {{#if err.message}}
               {{err.message}}
             {{/if}}
           </p>
-           
-        </div>
-             <textarea id="message" name="message" placeholder="message for me.." style="width:100%"></textarea>
             <br>
             <br>
             <input type="submit" class="btn btn-success btn-send" value="Send message">
-                  <p class="text-muted" style="color:red;">
-                <strong>*</strong> These fields are required.
-             </p>
 
         </div>
         {{!-- <div class="col-xs-12">

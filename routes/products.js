@@ -4,6 +4,8 @@ const Product = require('../models/product');
 const mongoose = require('mongoose');
  mongoose.connect('mongodb://localhost:27017/adminlte');
 var ObjectId = require('mongodb').ObjectId
+const { isEmpty } = require('lodash');
+const Validator = require('is_js');
 
 // router.get('/products', (req, res) => {
 //     res.render('products', {title: 'products'});
@@ -38,25 +40,29 @@ router.get('/add', (req, res)=>{
     })
 })
 router.post('/add', (req, res)=>{
-    req.checkBody('name', 'Name is required').notEmpty();
-    req.checkBody('categories', 'Categories is required').notEmpty();
-    req.checkBody('price', 'Price is required').isNumeric();
-    req.checkBody('date', 'Date is required').notEmpty();
- 
-    var err = req.validationErrors();
-	console.log(err)
-	if (err) {
-        let newErr = {};
-        err && err.length ? err.map(item => {
-            newErr = {
-                ...newErr,
-                [item.param]: item.msg
-            }
-        }) : {}
+    let { isValid, errors} = validator(req.body);
+    console.log(isValid, errors)
+    // req.checkBody('name', 'Name is required').notEmpty();
+    // req.checkBody('categories', 'Categories is required').notEmpty();
+    // req.checkBody('price', 'Price is required').isNumeric();
+    // req.checkBody('date', 'Date is required').notEmpty();
+    if (!isValid) {
 
-        console.log(newErr, 'newErr');
+    // var err = req.validationErrors();
+	// console.log(err)
+	// if (err) {
+    //     let newErr = {};
+    //     err && err.length ? err.map(item => {
+    //         newErr = {
+    //             ...newErr,
+    //             [item.param]: item.msg
+    //         }
+    //     }) : {}
+
+    //     console.log(newErr, 'newErr');
 		res.render('products/add', {
-			err: newErr
+            err: errors,
+            product: { name: req.body.name, categories: req.body.categories, price: req.body.price, date: req.body.date }
         });
     } else
     {
@@ -131,4 +137,29 @@ router.get('/delete/:id', (req,res)=>{
     });
 })
  
+function validator(data) {
+
+    let errors = {};
+
+    if (Validator.empty(data.name)){
+        errors.name = "Name is required!"
+    }
+
+    if (Validator.empty(data.categories)) {
+        errors.categories = "Categories is required!"
+    }
+
+    if(Validator.empty(data.price) && !parseInt(data.price)) {
+        errors.price = "Price should be in numeric form!"
+    }
+
+    if (Validator.empty(data.date)) {
+        errors.date = "Date is required!"
+    }
+
+    return{
+        isValid: isEmpty(errors),
+        errors
+    }
+}
 module.exports = router;

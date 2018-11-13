@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 var nodemailer = require('nodemailer');
+const { isEmpty } = require('lodash');
+const Validator = require('is_js');
 
 function ensureAuthenticated(req, res, next){
 	if (req.isAuthenticated()){
@@ -16,25 +18,30 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 });
 
 router.post('/', function(req, res, next) {
+    let { isValid, errors} = validator(req.body);
+    console.log(isValid, errors)
 
-    req.checkBody('name', 'Name is required').notEmpty();
-    req.checkBody('email', 'Email does not appear to be valid').isEmail();
-     req.checkBody('contactnumber', 'Contactnumber is required').isNumeric();
+    // req.checkBody('name', 'Name is required').notEmpty();
+    // req.checkBody('email', 'Email does not appear to be valid').isEmail();
+    // req.checkBody('contactnumber', 'Contactnumber is required').isNumeric();
+    // req.checkBody('message', 'Message is required').notEmpty();
+    if (!isValid) {
+    // var err = req.validationErrors();
+	// console.log(err)
+	// if (err) {
+    //     let newErr = {};
+    //     err && err.length ? err.map(item => {
+    //         newErr = {
+    //             ...newErr,
+    //             [item.param]: item.msg
+    //         }
+    //     }) : {}
 
-    var err = req.validationErrors();
-	console.log(err)
-	if (err) {
-        let newErr = {};
-        err && err.length ? err.map(item => {
-            newErr = {
-                ...newErr,
-                [item.param]: item.msg
-            }
-        }) : {}
-
-        console.log(newErr, 'newErr');
+    //     console.log(newErr, 'newErr');
 		res.render('contact', {
-			err: newErr
+            err: errors,
+            contact: {  name: req.body.name, email: req.body.email, contactnumber: req.body.contactnumber, 
+            message: req.body.message }
         });
     }
     else{
@@ -65,7 +72,31 @@ router.post('/', function(req, res, next) {
   });
 }
 });
-  
+function validator(data) {
+    let errors = {};
+    
+    if (Validator.empty(data.name)) {
+        errors.name = "Name is required!"
+    }
+
+    if(Validator.empty(data.email) && !Validator.email(data.email)) {
+        errors.email = "Email does not appear valid!"
+    }
+
+    if(Validator.empty(data.contactnumber) && !parseInt(data.contactnumber)) {
+        errors.contactnumber = "Contact number should be in numeric form!"
+    }
+
+    if (Validator.empty(data.message)) {
+        errors.message = "Message is required!"
+    }
+
+
+    return{
+        isValid: isEmpty(errors),
+        errors
+    }
+}
   
 //   transporter.sendMail(mailOptions, function(error, info){
 //     if(error){
