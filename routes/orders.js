@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/order');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/adminlte');
+mongoose.connect('mongodb://<admin>:<admin123>@ds135433.mlab.com:35433/adminlte');
 var ObjectId = require('mongodb').ObjectId
 const { isEmpty } = require('lodash');
 const Validator = require('is_js');
