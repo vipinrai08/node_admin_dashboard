@@ -1,19 +1,18 @@
 var express = require('express');
 var path = require('path');
+var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var expressSession = require('express-session');
-const fileUpload = require('express-fileupload');
 var passport = require('passport');
 var methodOverride = require('method-override')
-var User = require('./models/users');
-var mongo = require('mongodb');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte');
 var db = mongoose.connection;
+
 // Init App
 var app = express();
 
@@ -29,7 +28,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(cookieParser());
-
+app.use(morgan('dev'));
 
 app.use(methodOverride(function (req, res) {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -42,21 +41,21 @@ app.use(methodOverride(function (req, res) {
 //express session
 app.use(
 	expressSession({
-		key: 'user_sid',
+		//key: 'user_sid',
         secret: 'somerandonstuffs',
         resave: false,
         saveUninitialized: false,
-        cookie: {
-        expires: 600000
-    }
+        //cookie: {
+        //expires: 600000
+    //}
 	})
 );
-app.use((req, res, next) => {
-    if (req.cookies.user_sid && !req.session.user) {
-        res.clearCookie('user_username');        
-    }
-    next();
-});
+// app.use((req, res, next) => {
+//     if (req.cookies.user_sid && !req.session.user) {
+//         res.clearCookie('user_username');        
+//     }
+//     next();
+// });
 
 
 app.use(function(req, res, next) {
@@ -93,8 +92,6 @@ app.use(
 // Connect Flash
 app.use(flash());
 
- app.use(fileUpload());
-
 // Global Vars
 app.use(function(req, res, next) {
 	res.locals.success_msg = req.flash('success_msg');
@@ -105,36 +102,8 @@ app.use(function(req, res, next) {
 });
 
 
-app.post('/register', function(req, res) {
-	console.log(req.body);
-	var name = req.body.name;
-	var email = req.body.email;
-	var username = req.body.username;
-	var password = req.body.password;
 
-	// Validation
-	req.checkBody('name', 'Name is required').notEmpty();
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('email', 'Email is not valid').isEmail();
-	req.checkBody('password', 'Password is required').notEmpty();
-
-	var newUser = {
-		name: name,
-		email: email,
-		username: username,
-		password: password,
-	};
-	User.create(newUser, function(err, user) {
-		if (err) throw err;
-		console.log(user);
-	});
-	req.flash('success_msg', 'You are registered and can now login');
-	res.redirect('/users/login');
-});
-
-/*
-    Website routes
-*/
+//Website routes
 var profile = require('./routes/profile');
 var dashboard = require('./routes/dashboard');
 var users =require('./routes/users');
@@ -175,7 +144,9 @@ app.get('/', function(req,res){
   });
 });
 
-app.get(['/dashboard', '/orders', '/products', '/users', '/invoices', '/contact', '/payment'], function (req, res) {
+app.get(['/dashboard', '/orders', '/products',
+ '/users', '/invoices', '/contact', '/payment'],
+  function (req, res) {
 	res.send('');
   });
   

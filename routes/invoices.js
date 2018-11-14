@@ -149,11 +149,19 @@ function validator(data) {
         errors.name = "Name is required!"
     }
 
-    if(Validator.empty(data.email) && !Validator.email(data.email)) {
+    if(Validator.empty(data.email)) {
+        errors.email = "Email is required!  "
+    }
+
+    if(data.email && !Validator.email(data.email)) {
         errors.email = "Email does not appear valid!"
     }
 
-    if(Validator.empty(data.contactnumber) && !parseInt(data.contactnumber)) {
+    if(Validator.empty(data.contactnumber)){
+        errors.contactnumber = "Contact number is required!"
+    }
+    
+    if(data.contactnumber && !parseInt(data.contactnumber)) {
         errors.contactnumber = "Contact number should be in numeric form!"
     }
 

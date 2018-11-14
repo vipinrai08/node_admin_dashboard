@@ -99,6 +99,16 @@ async function getCategories(id) {
 }
 
 router.put('/edit/:id', (req, res)=>{
+    let { isValid, errors} = validator(req.body);
+    console.log(isValid, errors)
+    if (!isValid) {
+             res.render('categories/edit', {
+                err: errors,
+                categories: { name: req.body.name}
+            });
+        }
+     else
+    {
     Categories.update({_id: req.params.id},
         { $set:{ 
             name: req.body.name,
@@ -113,7 +123,19 @@ router.put('/edit/:id', (req, res)=>{
     .catch(err => {
         res.redirect('/categories');
     })
+}
 })
+function validator(data) {
+    let errors = {};
+
+    if (Validator.empty(data.name)){
+        errors.name = "Name is required!"
+    }
+    return {
+        isValid: isEmpty(errors),
+        errors
+    }
+}
 
 
 router.get('/delete/:id', (req,res)=>{

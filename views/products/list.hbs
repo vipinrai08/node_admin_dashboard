@@ -11,14 +11,37 @@
   .table-design tr:nth-child(even) {
     background-color: #dddddd;
   }
+ .btn {
+    margin-right: 23px;
+    border: 1px solid grey;
+    padding: 10px;
+    margin: 10px 0px;
+    width: 88px;
+    display: block;
+    text-align: center;
+    background-color: #1e282c;
+    color: #fff;
+    font-weight: 800
+  }
+  .btn-container {
+    text-align: right;
+    float: right
+  }
+  .breadcrumb-container {
+    background-color: #ddd;
+    border-radius: 5px;
+    padding: 8px;
+    color: #444;
+  }
 </style>
-
 <section class="content-header">
-  <h1>
-    Products List
-  </h1>
-<p>Below you will see list of products.</p>
-<a style="border: 1px solid grey; padding: 10px; margin: 10px 0px; width: 88px; display: block; text-align: center; background-color: #1e282c; color: #fff; font-weight: 800" href="/products/add/">Add</a>
+  <div class="breadcrumb-container">
+    <h3 style="margin: 0px">Products</h3>
+  </div>
+
+<div class="btn-container">
+  <a class="btn" href="/products/add/">Add</a>
+</div>
 <table width="80%" border="0" class="table-design">
   <tbody>
     <tr style="text-align:left; background-color:#CCC">

@@ -16,6 +16,7 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
+  
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,7 +33,7 @@
   <div class="box-header with-border">
   <h1 class="box-title"></h1>
   <h3>
-    New User
+    Users/Add User
   </h3>
   
 <form action="/users/add" method="post" name="form1">
@@ -47,15 +48,7 @@
     </div> --}}
   </div>
   <div class="box-body">
-      <div class="form-group">
-        <label>image</label>
-         <input type="file" class="form-control" placeholder="image" name="image">
-          <p style="color: red"> &nbsp;
-            {{#if err.image}}
-              {{err.image}}
-            {{/if}}
-          </p>
-         </div>
+      
         <div class="form-group">
           <label>Name*</label>
           <input id="name" type="text" name="name" class="form-control" placeholder="Please enter your name"/>
@@ -84,9 +77,42 @@
             {{/if}}
           </p>
         </div>
+        <div class="form-group">
+        <label>image(optional)</label>
+         <input type="file" class="form-control" placeholder="image" name="image">
+          <p style="color: red"> &nbsp;
+            {{#if err.image}}
+              {{err.image}}
+            {{/if}}
+          </p>
+         </div>
        </div>
         
           <input type="submit" name="Submit" placeholder="Add" class="btn btn-primary"/>
+          {{!-- {{#if sessionFlash.message}}
+  <div id="flash-messages" class="container">
+      {{#contains sessionFlash.type "info"}}
+      <div class="alert alert-info">
+            {{{sessionFlash.message}}}
+      </div>
+      {{/contains}}
+      {{#contains sessionFlash.type "success"}}
+      <div class="alert alert-success">
+              {{{sessionFlash.message}}}
+      </div>
+      {{/contains}}
+      {{#contains sessionFlash.type "warning"}}
+      <div class="alert alert-warning">
+            {{{sessionFlash.message}}}
+      </div>
+       {{/contains}}
+      {{#contains sessionFlash.type "error"}}
+      <div class="alert alert-danger">
+            {{{sessionFlash.message}}}
+      </div>
+      {{/contains}}
+  </div>
+{{/if}} --}}
         </div>
 </form>
 </section>

@@ -13,17 +13,19 @@ const Validator = require('is_js');
 
 
 
+
 // Login
 router.get('/login', function(req, res) {
 		if (req.isAuthenticated()){
 			res.redirect('/dashboard');
+			
 		}
-		 else {
-		res.render('Auth/login',{
-			layout: false
-		});
-	}
-});
+			else {
+			res.render('Auth/login',{
+				layout: false
+			});
+		}
+	});
 
 // Register view
 router.get('/register', function(req, res) {
@@ -187,10 +189,13 @@ router.get('/auth/facebook/callback',
 	if (Validator.empty(data.username)) {
 		errors.username = "Username is required!"
 	}
+	if(Validator.empty(data.email)) {
+        errors.email = "Email is required!  "
+    }
 
-	if(Validator.empty(data.email) && !Validator.email(data.email)) {
-		errors.email = "Email does not appear valid!"
-	}
+    if(data.email && !Validator.email(data.email)) {
+        errors.email = "Email does not appear valid!"
+    }
 
 
 	if (Validator.empty(data.password)) {
