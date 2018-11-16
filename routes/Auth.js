@@ -120,20 +120,86 @@ passport.deserializeUser(function(id, done) {
 	});
 });
 
-router.post('/login',
-            passport.authenticate('local', {
-			successReturnToOrRedirect: '/dashboard',
-			failureRedirect: '/Auth/login',
-			failureFlash: true
-		}),
-	function(req, res) {
-		res.redirect('/');
-	}
- );
+// router.post('/login', function (req, res) {
 
- router.get('/signout',function(req,res){    
+// 	let { isValid, errors} = validator(req.body);
+
+// 	if (!isValid) {
+// 		res.render('Auth/login', {
+// 			layout: false,
+// 			err: errors,
+// 			errors: {username: req.body.username,
+// 				password: req.body.password
+// 			}
+// 		})
+		
+// 	} else {
+// 		return passport.authenticate('local', {
+// 			successReturnToOrRedirect: '/dashboard',
+// 			failureRedirect: '/Auth/login',
+// 			failureFlash: true
+// 		})
+// 	}
+// })
+
+// router.post('/login', passport.authenticate('local', {
+// 	successReturnToOrRedirect: '/dashboard',
+// 	failureRedirect: '/Auth/login',
+// 	failureFlash: true
+// }))	
+
+router.post('/login', function(req, res, next) {
+	passport.authenticate('local', function(err, user, info) {
+
+	if (err) {
+		console.log(err, 'err')  
+		return next(err);
+	}
+	if (!user) {
+		let errors = {};
+		console.log(info, 'info')
+
+		if(info && info.message === 'Missing credentials') {
+			if(req && req.body && !req.body.username) {
+				errors = {
+					...errors,
+					username: "Username is requried!"
+				}	
+			}
+
+			if(req && req.body && !req.body.password) {
+				errors = {
+					...errors,
+					password: "Password is required!"
+				}	
+			}
+		}
+
+		if(info && info.message === 'Unknown User') {
+			errors = {
+				message: "Username doesn't exist try using correct username"
+			}
+		}
+
+		console.log(user, info, 'info')
+		return res.render('Auth/login', {
+			layout: false,
+			err: errors,
+			user: {
+				username: req.body.username
+			}
+		})
+	}
+	req.logIn(user, function(err) {
+		if (err) { return next(err); }
+		return res.redirect('/dashboard');
+	});
+	})(req, res, next);
+  });
+
+ router.post('/signout',function(req,res){    
     if (!req.isAuthenticated()){
-		res.redirect('Auth/login');
+		res.redirect('/dashboard');
 	}
 	 else {
 	res.render('/dashboard',{

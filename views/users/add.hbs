@@ -36,7 +36,7 @@
     Users/Add User
   </h3>
   
-<form action="/users/add" method="post" name="form1">
+<form action="/users/add" method="post" name="form1" enctype="form-data">
 <div class="col-xs-12">
     {{!-- <div class="alert-danger" style="position: relative">
       <span style="position: absolute; top: 5; right: 12">x</span>
@@ -78,11 +78,11 @@
           </p>
         </div>
         <div class="form-group">
-        <label>image(optional)</label>
-         <input type="file" class="form-control" placeholder="image" name="image">
+        <label>UserImage(optional)</label>
+         <input type="file" class="form-control" placeholder="userImage" name="userImage">
           <p style="color: red"> &nbsp;
-            {{#if err.image}}
-              {{err.image}}
+            {{#if err.userImage}}
+              {{err.userImage}}
             {{/if}}
           </p>
          </div>

@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+const multer  = require('multer')
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -17,18 +18,38 @@ var db = mongoose.connection;
 var app = express();
 
 // view engine setup
-app.engine('.hbs', exphbs({defaultLayout: 'layout', extname: '.hbs'}));
+app.engine('.hbs', exphbs({
+	defaultLayout: 'layout', 
+	extname: '.hbs',
+	helpers:{
+		// Function to do basic mathematical operation in handlebar
+		math: function(lvalue, operator, rvalue) {lvalue = parseFloat(lvalue);
+			rvalue = parseFloat(rvalue);
+			return {
+				"+": lvalue + rvalue,
+				"-": lvalue - rvalue,
+				"*": lvalue * rvalue,
+				"/": lvalue / rvalue,
+				"%": lvalue % rvalue
+			}[operator];
+		}
+	}
+}));
+app.use('/uploads', express.static('uploads'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', '.hbs');
-
 app.use( express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 // BodyParser Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '10mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true, parameterLimit: 1000000}))
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(morgan('dev'));
+
+app.use(multer({
+    dest: path.join(__dirname, 'upload/')}).single('file'));
+
 
 app.use(methodOverride(function (req, res) {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -114,6 +135,7 @@ var orders = require('./routes/orders');
 var contact = require('./routes/contact');
 var invoices = require('./routes/invoices');
 var payment = require('./routes/payment');
+var signout = require('./routes/signout');
 
 app.use('/dashboard',dashboard);
 app.use('/profile', profile);
@@ -125,6 +147,7 @@ app.use('/orders', orders);
 app.use('/contact', contact);
 app.use('/invoices', invoices);
 app.use('/payment', payment);
+app.use('/signout', signout);
 
 
 app.get('/', function(req, res) {
@@ -145,7 +168,7 @@ app.get('/', function(req,res){
 });
 
 app.get(['/dashboard', '/orders', '/products',
- '/users', '/invoices', '/contact', '/payment'],
+ '/users', '/invoices', '/contact', '/payment', '/signout'],
   function (req, res) {
 	res.send('');
   });

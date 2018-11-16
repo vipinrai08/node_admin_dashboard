@@ -47,16 +47,19 @@
   <tbody>
     <tr style="text-align:left; background-color:#CCC">
       <th>#</th>
-      <Th>image</Th>
+       <Th>UserImage</Th>
       <th>Name</th>
       <th>Age</th>
       <th>Email</th>
       <th>Action</th>
     </tr>
     {{#each users}}
+    {{#.}}
     <tr>
-      <td></td>
-      <td>{{this.image}}</td>
+      <td><li class="order{{@index}}"> 
+        {{math @index "+" 1}}</li>
+{{/.}}</td>
+       <td>{{this.userImage}}</td>
       <td>{{this.name}} </td>
       <td>{{this.age}} Years </td>
       <td>{{this.email}} </td>

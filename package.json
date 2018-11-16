@@ -46,6 +46,7 @@
     "passport-http": "*",
     "passport-local": "*",
     "randomstring": "^1.1.5",
+    "save": "^2.3.2",
     "stripe": "^6.13.0"
   },
   "devDependencies": {}

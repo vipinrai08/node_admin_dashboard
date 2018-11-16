@@ -125,17 +125,6 @@ router.put('/edit/:id', (req, res)=>{
     })
 }
 })
-function validator(data) {
-    let errors = {};
-
-    if (Validator.empty(data.name)){
-        errors.name = "Name is required!"
-    }
-    return {
-        isValid: isEmpty(errors),
-        errors
-    }
-}
 
 
 router.get('/delete/:id', (req,res)=>{

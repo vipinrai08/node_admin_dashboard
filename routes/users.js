@@ -1,15 +1,36 @@
 const express = require('express');
 const router = express.Router();
-const fileUpload = require('express-fileupload');
-var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
+const multer  = require('multer')
+//  var upload = multer({ dest: 'uploads/' })
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function(req, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname);
+    }
+});
+
+const filefilter =(req, file, cb) =>{
+    if (file.Mimetype==='image/jpeg' || file.Mimetype==='image/png'){
+    cb(null, true);
+} else{
+        cb(null, false);
+    }
+};
+
+const upload = multer({ storage: storage, 
+    limits: {
+    fileSize: 1024*1024*5
+},
+filefilter: filefilter
+});
+
 const User = require('../models/user');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte');// var ObjectId = require('mongodb').ObjectId
+mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte');// const ObjectId = require('mongodb').ObjectId
 const { isEmpty } = require('lodash');
 const Validator = require('is_js');
-var app = express();
-
 
 
 // router.get('/users', (req, res) => {
@@ -24,7 +45,7 @@ function ensureAuthenticated(req, res, next){
 
 router.get('/',ensureAuthenticated,(req, res) =>{
    User.find()
-    .select("name age email image")
+    .select("name age email userImage")
     .exec()
     .then(users => { console.log(users) 
         res.render('users/list', { users })
@@ -43,38 +64,27 @@ router.get('/add', (req, res)=>{
     })
 })
 
-router.post('/add', (req, res)=>{
+router.post('/add', upload.single('userImage'), (req, res)=>{
+    console.log(req.file, 'file');
 
     let { isValid, errors} = validator(req.body);
     console.log(isValid, errors)
-    
-    // req.checkBody('name', 'Name is required').notEmpty();
-    // req.checkBody('age', 'Age is required').notEmpty();
-    // req.checkBody('age', 'Age should be in numeric form').isNumeric();
-    // req.checkBody('email', 'Email does not appear to be valid').isEmail();
-    // var err = req.validationErrors();
-
-	// console.log(err)
+   
 	if (!isValid) {
-        // let newErr = {};
-        // err && err.length ? err.map(item => {
-        //     newErr = {
-        //         ...newErr,
-        //         [item.param]: item.msg
-        //     }
-        // }) : {}
-
-        // // console.log(newErr, 'newErr');
+      
 		res.render('users/add', {
             err: errors,
-            user: { name: req.body.name, age: req.body.age, email: req.body.email }
+            user: { name: req.body.name, age: req.body.age, email: req.body.email}
         });
     } else{
+        console.log(req.files, 'files');
         var user = new User({
             _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
             age: req.body.age,
             email: req.body.email,
+            userImage: req.body.userImage
+           
         });
     
        user
@@ -91,6 +101,7 @@ router.post('/add', (req, res)=>{
         
         }
     });
+
 
 
 router.get('/edit/:id', async (req, res)=>{
@@ -111,11 +122,22 @@ async function getUser(id) {
 }
 
 router.put('/edit/:id', (req, res)=>{
+    let { isValid, errors} = validator(req.body);
+    console.log(isValid, errors)
+    
+	if (!isValid) {
+    
+		res.render('users/edit', {
+            err: errors,
+            user: { name: req.body.name, age: req.body.age, email: req.body.email, userImage: req.file.path}
+        });
+    } else{
    User.update({_id: req.params.id},
         { $set:{ 
             name: req.body.name, 
             age:req.body.age, 
             email: req.body.email,
+            userImage: req.file.path
         }
     })
     .exec()
@@ -126,6 +148,7 @@ router.put('/edit/:id', (req, res)=>{
     .catch(err => {
         res.redirect('/users');
     })
+}
 })
 
 

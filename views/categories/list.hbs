@@ -45,11 +45,16 @@
 <table width="80%" border="0" class="table-design">
   <tbody>
     <tr style="text-align:left; background-color:#CCC">
+      <th>#</th>
       <th>Name</th>
       <th>Action</th>
     </tr>
     {{#each categories}}
+     {{#.}}
     <tr>
+      <td><li class="order{{@index}}">  
+        {{math @index "+" 1}}</li>
+{{/.}}</td>
       <td>{{this.name}} </td>
       <td>
         <div style="float:left">

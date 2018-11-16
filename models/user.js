@@ -11,5 +11,9 @@ usercrudSchema = mongoose.Schema({
   age:{
       type: String
   },
+  userImage: {
+      type: String
+  }
+  
 });
 module.exports = mongoose.model('UserCrud', usercrudSchema);

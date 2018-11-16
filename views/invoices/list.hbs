@@ -46,6 +46,7 @@
 <table width="80%" border="0" class="table-design">
   <tbody>
     <tr style="text-align:left; background-color:#CCC">
+      <th>#</th>
       <th>Name</th>
       <th>Email</th>
       <th>Contactnumber</th>
@@ -60,7 +61,11 @@
       <th>Action</th>
     </tr>
     {{#each invoices}}
+     {{#.}}
     <tr>
+      <td><li class="order{{@index}}">  
+        {{math @index "+" 1}}</li>
+{{/.}}</td>
       <td>{{this.name}} </td>
       <th>{{this.email}}</th>
       <td>{{this.contactnumber}} </td>

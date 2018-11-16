@@ -112,6 +112,19 @@ async function getOrder(id) {
 }
 
 router.put('/edit/:id', (req, res)=>{
+    let { isValid, errors} = validator(req.body);
+    console.log(isValid, errors)
+  
+    if (!isValid) {
+
+		res.render('orders/edit', {
+            err: errors,
+            order: { products: req.body.products, categories: req.body.categories, name: req.body.name, 
+                email: req.body.email, contactnumber: req.body.contactnumber, 
+                address: req.body.address, date: req.body.date}
+        });
+    } else
+    {
    Order.update({_id: req.params.id},
         { $set:{ 
             products: req.body.products,
@@ -133,6 +146,7 @@ router.put('/edit/:id', (req, res)=>{
     .catch(err => {
         res.redirect('/orders');
     })
+}
 })
 
 

@@ -105,6 +105,32 @@ async function getProduct(id) {
 }
 
 router.put('/edit/:id', (req, res)=>{
+    let { isValid, errors} = validator(req.body);
+    console.log(isValid, errors)
+    // req.checkBody('name', 'Name is required').notEmpty();
+    // req.checkBody('categories', 'Categories is required').notEmpty();
+    // req.checkBody('price', 'Price is required').isNumeric();
+    // req.checkBody('date', 'Date is required').notEmpty();
+    if (!isValid) {
+
+    // var err = req.validationErrors();
+	// console.log(err)
+	// if (err) {
+    //     let newErr = {};
+    //     err && err.length ? err.map(item => {
+    //         newErr = {
+    //             ...newErr,
+    //             [item.param]: item.msg
+    //         }
+    //     }) : {}
+
+    //     console.log(newErr, 'newErr');
+		res.render('products/edit', {
+            err: errors,
+            product: { name: req.body.name, categories: req.body.categories, price: req.body.price, date: req.body.date }
+        });
+    } else
+    {
    Product.update({_id: req.params.id},
         { $set:{ 
             name: req.body.name,
@@ -122,6 +148,7 @@ router.put('/edit/:id', (req, res)=>{
     .catch(err => {
         res.redirect('/products');
     })
+}
 })
 
 

@@ -45,6 +45,7 @@
 <table width="80%" border="0" class="table-design">
   <tbody>
     <tr style="text-align:left; background-color:#CCC">
+      <th>#</th>
       <th>Categories</th>
       <th>Name</th>
       <th>Price</th>
@@ -52,7 +53,11 @@
       <th>Action</th>
     </tr>
     {{#each products}}
+     {{#.}}
     <tr>
+      <td><li class="order{{@index}}">  
+        {{math @index "+" 1}}</li>
+{{/.}}</td>
       <td>{{this.categories}}</td>
       <td>{{this.name}} </td>
       <td>{{this.price}}  </td>
