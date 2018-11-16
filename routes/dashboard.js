@@ -9,7 +9,7 @@ function ensureAuthenticated(req, res, next){
 	}
 	res.redirect('/Auth/login');
 }
-router.get('/', ensureAuthenticated, function(erq, res){
+router.get('/', ensureAuthenticated, function(req, res){
 	res.render('dashboard',{
 		title: 'Dashboard page'
 	});
