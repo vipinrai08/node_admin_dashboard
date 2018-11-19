@@ -1,4 +1,3 @@
-
 <style>
   .table-design {
     border-collapse: collapse;
@@ -12,7 +11,7 @@
   .table-design tr:nth-child(even) {
     background-color: #dddddd;
   }
-  .btn {
+ .btn {
     margin-right: 23px;
     border: 1px solid grey;
     padding: 10px;
@@ -32,7 +31,7 @@
     background-color: #ddd;
     border-radius: 5px;
     padding: 8px;
-    color: #444;
+    color: rgb(48, 42, 42);
   }
 </style>
 <section class="content-header">
@@ -47,33 +46,30 @@
   <tbody>
     <tr style="text-align:left; background-color:#CCC">
       <th>#</th>
-       <Th>UserImage</Th>
+      <th>Photo</th>
       <th>Name</th>
       <th>Age</th>
       <th>Email</th>
       <th>Action</th>
     </tr>
     {{#each users}}
-    {{#.}}
+     {{#.}}
     <tr>
-      <td><li class="order{{@index}}"> 
+      <td><li class="order{{@index}}">  
         {{math @index "+" 1}}</li>
 {{/.}}</td>
-       <td>{{this.userImage}}</td>
+      <td>{{this.photo}}</td>
       <td>{{this.name}} </td>
-      <td>{{this.age}} Years </td>
-      <td>{{this.email}} </td>
+      <td>{{this.age}}  </td>
+       <td>{{this.email}} </td>
       <td>
         <div style="float:left">
           <a href="/users/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
           <a href="/users/delete/{{this.id}}">Delete</a>
- 
-
-
-          {{!-- <a href="/users/add/">Add</a> --}}
         </div>
       </td>
     </tr>
     {{/each}}
   </tbody>
 </table>
+</section>

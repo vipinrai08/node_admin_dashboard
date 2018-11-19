@@ -47,9 +47,9 @@ app.use(expressValidator());
 app.use(cookieParser());
 app.use(morgan('dev'));
 
-app.use(multer({
-    dest: path.join(__dirname, 'upload/')}).single('file'));
-
+// app.use(multer({
+//     dest: './public/img/portfolio/'
+// }));
 
 app.use(methodOverride(function (req, res) {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -113,13 +113,10 @@ app.use(
 // Connect Flash
 app.use(flash());
 
-// Global Vars
-app.use(function(req, res, next) {
-	res.locals.success_msg = req.flash('success_msg');
-	res.locals.error_msg = req.flash('error_msg');
-	res.locals.error = req.flash('error');
-	res.locals.user = req.user || null;
-	next();
+app.locals.moment = require('moment');
+app.use(function(req, res, next){
+    res.locals.messages = require('express-messages')(req, res);
+    next();
 });
 
 
@@ -137,6 +134,7 @@ var invoices = require('./routes/invoices');
 var payment = require('./routes/payment');
 var signout = require('./routes/signout');
 
+
 app.use('/dashboard',dashboard);
 app.use('/profile', profile);
 app.use('/users', users);
@@ -148,6 +146,7 @@ app.use('/contact', contact);
 app.use('/invoices', invoices);
 app.use('/payment', payment);
 app.use('/signout', signout);
+
 
 
 app.get('/', function(req, res) {

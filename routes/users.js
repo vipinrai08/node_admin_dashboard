@@ -1,30 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const multer  = require('multer')
-//  var upload = multer({ dest: 'uploads/' })
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, './uploads/');
-    },
-    filename: function(req, file, cb) {
-        cb(null, new Date().toISOString() + file.originalname);
-    }
-});
+const multer = require('multer')
+const upload = multer({ storage: multer.memoryStorage() })
 
-const filefilter =(req, file, cb) =>{
-    if (file.Mimetype==='image/jpeg' || file.Mimetype==='image/png'){
-    cb(null, true);
-} else{
-        cb(null, false);
-    }
-};
 
-const upload = multer({ storage: storage, 
-    limits: {
-    fileSize: 1024*1024*5
-},
-filefilter: filefilter
-});
 
 const User = require('../models/user');
 const mongoose = require('mongoose');
@@ -45,9 +24,9 @@ function ensureAuthenticated(req, res, next){
 
 router.get('/',ensureAuthenticated,(req, res) =>{
    User.find()
-    .select("name age email userImage")
+    .select("name age email photo")
     .exec()
-    .then(users => { console.log(users) 
+    .then(users => {
         res.render('users/list', { users })
     })
     .catch(err => {
@@ -64,8 +43,12 @@ router.get('/add', (req, res)=>{
     })
 })
 
-router.post('/add', upload.single('userImage'), (req, res)=>{
-    console.log(req.file, 'file');
+router.post('/add',upload.single('photo'), (req, res)=>{
+    if (req.file) {
+        console.log("hello")
+        console.log('Uploaded: ', req.file)
+    }
+   
 
     let { isValid, errors} = validator(req.body);
     console.log(isValid, errors)
@@ -83,7 +66,7 @@ router.post('/add', upload.single('userImage'), (req, res)=>{
             name: req.body.name,
             age: req.body.age,
             email: req.body.email,
-            userImage: req.body.userImage
+        
            
         });
     
@@ -100,18 +83,49 @@ router.post('/add', upload.single('userImage'), (req, res)=>{
            });
         
         }
+    
     });
 
-
-
-router.get('/edit/:id', async (req, res)=>{
-    const users = await getUser(req.params.id);
-    res.render('users/edit',{
-        title: 'Edit',
-        users
-    })
-});
-
+    router.post('/upload', function(req, res) {
+            if(error){
+               res.redirect('/?msg=3');
+            }else{
+              if(req.file == undefined){
+                
+                res.redirect('/?msg=2');
+      
+              }else{
+                   
+                  /**
+                   * Create new record in mongoDB
+                   */
+                  var fullPath = "files/"+req.file.filename;
+      
+                  var document = {
+                    path:     fullPath, 
+                    caption:   req.body.caption
+                  };
+        
+                var photo = new Photo(document); 
+                photo.save(function(error){
+                  if(error){ 
+                    throw error;
+                  } 
+                  res.redirect('/?msg=1');
+               });
+            }
+          }
+        });    
+      
+        router.get('/edit/:id', async (req, res)=>{
+            const users = await getUser(req.params.id);
+            res.render('products/edit',{
+                title: 'Edit',
+                users
+            })
+        });  
+    
+      
 async function getUser(id) {
     try{
         const user = await User.findOne({ _id: id }).exec();
@@ -137,7 +151,7 @@ router.put('/edit/:id', (req, res)=>{
             name: req.body.name, 
             age:req.body.age, 
             email: req.body.email,
-            userImage: req.file.path
+            userImage: req.body.userImage
         }
     })
     .exec()

@@ -33,22 +33,12 @@
   <div class="box-header with-border">
   <h1 class="box-title"></h1>
   <h3>
-    Users/Add User
+    Users/Add user
   </h3>
   
 <form action="/users/add" method="post" name="form1" enctype="form-data">
-<div class="col-xs-12">
-    {{!-- <div class="alert-danger" style="position: relative">
-      <span style="position: absolute; top: 5; right: 12">x</span>
-      {{#if err }}
-        {{#each err }}
-          <p style="color: #fff">{{ this.msg }}</p>
-        {{/each}}
-      {{/if}}
-    </div> --}}
-  </div>
-  <div class="box-body">
-      
+ {{!-- <div class="col-xs-12">  --}}
+      <div class="box-body">
         <div class="form-group">
           <label>Name*</label>
           <input id="name" type="text" name="name" class="form-control" placeholder="Please enter your name"/>
@@ -58,7 +48,6 @@
             {{/if}}
           </p>
         </div>
-        
         <div class="form-group">
           <label>Age*</label>
           <input type="text" name="age" placeholder=" please enter your age" class="form-control"/>
@@ -78,43 +67,18 @@
           </p>
         </div>
         <div class="form-group">
-        <label>UserImage(optional)</label>
-         <input type="file" class="form-control" placeholder="userImage" name="userImage">
+        <label>photo(optional)</label>
+         <input type="file" class="form-control" placeholder="photo" name="photo">
           <p style="color: red"> &nbsp;
-            {{#if err.userImage}}
-              {{err.userImage}}
+            {{#if err.photo}}
+              {{err.photo}}
             {{/if}}
           </p>
          </div>
        </div>
-        
           <input type="submit" name="Submit" placeholder="Add" class="btn btn-primary"/>
-          {{!-- {{#if sessionFlash.message}}
-  <div id="flash-messages" class="container">
-      {{#contains sessionFlash.type "info"}}
-      <div class="alert alert-info">
-            {{{sessionFlash.message}}}
-      </div>
-      {{/contains}}
-      {{#contains sessionFlash.type "success"}}
-      <div class="alert alert-success">
-              {{{sessionFlash.message}}}
-      </div>
-      {{/contains}}
-      {{#contains sessionFlash.type "warning"}}
-      <div class="alert alert-warning">
-            {{{sessionFlash.message}}}
-      </div>
-       {{/contains}}
-      {{#contains sessionFlash.type "error"}}
-      <div class="alert alert-danger">
-            {{{sessionFlash.message}}}
-      </div>
-      {{/contains}}
-  </div>
-{{/if}} --}}
-        </div>
-</form>
-</section>
-</head>
-</html>
+
+  </form>
+  </section>
+  </head>
+  </html>

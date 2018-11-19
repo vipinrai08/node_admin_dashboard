@@ -36,6 +36,19 @@ router.get('/register', function(req, res) {
 
 // Register User
 router.post('/register', function(req, res) {
+	User.findOne({
+        username: req.body.username
+    }, function(err, user) {
+        if (err) {
+            alert(err)
+            if (user) {
+                alert('this username is already taken. Please choose another.')
+                console.log('there was a user');
+                return false;
+
+            }
+        }
+    });
 
 	var name = req.body.name;
 	var email = req.body.email;
@@ -87,8 +100,8 @@ router.post('/register', function(req, res) {
 				});
 				req.flash('success_msg', 'You are registered and can now login');
 				res.redirect('/Auth/login');
-			}
-		});
+			}			
+});
 
 passport.use(
 	new LocalStrategy(function(username, password, done) {
@@ -157,7 +170,6 @@ router.post('/login', function(req, res, next) {
 	}
 	if (!user) {
 		let errors = {};
-		console.log(info, 'info')
 
 		if(info && info.message === 'Missing credentials') {
 			if(req && req.body && !req.body.username) {
@@ -170,8 +182,8 @@ router.post('/login', function(req, res, next) {
 			if(req && req.body && !req.body.password) {
 				errors = {
 					...errors,
-					password: "Password is required!"
-				}	
+					password: "Password is required!",
+				}
 			}
 		}
 
@@ -181,7 +193,12 @@ router.post('/login', function(req, res, next) {
 			}
 		}
 
-		console.log(user, info, 'info')
+		if(info && info.message === "Invalid password") {
+			errors = {
+				password: info.message
+			}
+		}
+
 		return res.render('Auth/login', {
 			layout: false,
 			err: errors,
@@ -197,16 +214,6 @@ router.post('/login', function(req, res, next) {
 	})(req, res, next);
   });
 
- router.post('/signout',function(req,res){    
-    if (!req.isAuthenticated()){
-		res.redirect('/dashboard');
-	}
-	 else {
-	res.render('/dashboard',{
-		layout: false
-	});
-}
-});
 
 // Signing using Facebook
 passport.use(new FacebookStrategy({
@@ -267,12 +274,27 @@ router.get('/auth/facebook/callback',
 	if (Validator.empty(data.password)) {
 		errors.password = "Password is required!"
 	}
-
+	 
+	if (Validator.empty(data.password)) {
+		errors.password = "Password is Invalid!"
+	}
 	return{
 		isValid: isEmpty(errors),
 		errors
 	}
 }
-	
+function findUserByEmail(email){
+
+	if(email){
+		return new Promise((resolve, reject) => {
+		  User.findOne({ email: email })
+			.exec((err, doc) => {
+			  if (err) return reject(err)
+			  if (doc) return reject(new Error('This email already exists. Please enter another email.'))
+			  else return resolve(email)
+			})
+		})
+	  }
+   }
 
 module.exports = router;

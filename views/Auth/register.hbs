@@ -27,7 +27,57 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition register-page">
+<style>
+body, html {
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.bg-img {
+    /* The image used */
+    background-image: url("https://thumbs.dreamstime.com/b/d-white-people-writing-registration-notebook-page-renderer-illustration-isolated-background-54642564.jpg");
+    height:100vh;
+  
+
+    /* Center and scale the image nicely */
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    position: relative;
+}
+
+/* Add styles to the form container */
+.container {
+    position: absolute;
+    right: 0;
+    margin: 20px;
+    max-width: 300px;
+    padding: 16px;
+    background-color: white;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+/* Set a style for the submit button */
+
+</style>
+<body class="hold-transition register-page bg-img">
 <div class="register-box">
   <div class="register-logo">
     <a href=""><b>Admin</b>LTE</a>
@@ -40,47 +90,47 @@
   <div class="form-group">
     <label>Name</label>
     <input type="text" class="form-control" placeholder="Name" name="name" >
-   <p style="color: red"> &nbsp;
+
             {{#if err.name}}
-              {{err.name}}
+              <p style="color: red"> &nbsp;   {{err.name}} </p>
             {{/if}}
-          </p>
+         
   </div> 
   <div class="form-group">
     <label>Username</label>
     <input type="text" class="form-control" placeholder="Username" name="username">
-    <p style="color: red"> &nbsp;
+    
             {{#if err.username}}
-              {{err.username}}
+             <p style="color: red"> &nbsp; {{err.username}}</p>
             {{/if}}
-          </p>
+          
   </div>
   <div class="form-group">
     <label>Email</label>
     <input type="text" class="form-control" placeholder="Email" name="email">
-    <p style="color: red"> &nbsp;
+   
             {{#if err.email}}
-              {{err.email}}
+               <p style="color: red"> &nbsp;{{err.email}} </p>
             {{/if}}
-          </p>
+         
   </div>
      <div class="form-group">
         <label>Password</label>
          <input type="password" class="form-control" placeholder="Password" name="password">
-         <p style="color: red"> &nbsp;
+        
             {{#if err.password}}
-              {{err.password}}
+               <p style="color: red"> &nbsp;{{err.password}}   </p>
             {{/if}}
-          </p>
+       
      </div>
      <div class="form-group">
         <label>confirm Password</label>
          <input type="password" class="form-control" placeholder="confirm Password" name="confirm password">
-         <p style="color: red"> &nbsp;
+        
             {{#if err.confirmpassword}}
-              {{err.confirmpassword}}
+               <p style="color: red"> &nbsp;{{err.confirmpassword}}</p>
             {{/if}}
-          </p>
+          
      </div>
      <div class="row">
         <div class="col-xs-8">
