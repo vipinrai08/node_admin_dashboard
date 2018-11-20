@@ -11,7 +11,7 @@ usercrudSchema = mongoose.Schema({
   age:{
       type: String
   },
-  avatar: {
+  photo: {
       type: String
   }
   

@@ -37,8 +37,8 @@
       <div class="form-group">
           <label>Products</label>
            <p style="color: red"> &nbsp;
-            {{#if err.products}}
-              {{err.products}}
+               {{#if err.products}}
+         <p style="color: red; margin: 0; padding: 0">{{err.products}}</p> 
             {{/if}}
           </p>
           <select name="products" style="
@@ -56,9 +56,8 @@
         </div>
          <div class="form-group">
           <label>Categories</label>
-           <p style="color: red"> &nbsp;
-            {{#if err.categories}}
-              {{err.categories}}
+           {{#if err.categories}}
+         <p style="color: red; margin: 0; padding: 0">{{err.categories}}</p> 
             {{/if}}
           </p>
           <select name="categories" style="
@@ -78,45 +77,40 @@
         <div class="form-group">
           <label>Price</label>
           <input type="number" name="price" placeholder=" price" class="form-control"  value="{{orders.price}}" />
-           <p style="color: red"> &nbsp;
-            {{#if err.price}}
-              {{err.price}}
+              {{#if err.price}}
+         <p style="color: red; margin: 0; padding: 0">{{err.price}}</p> 
             {{/if}}
           </p>
        </div>
          <div class="form-group">
           <label>Name</label>
           <input id="name" type="text" name="name" placeholder="name" class="form-control" value="{{orders.name}}" />
-           <p style="color: red"> &nbsp;
-            {{#if err.name}}
-              {{err.name}}
+             {{#if err.name}}
+         <p style="color: red; margin: 0; padding: 0">{{err.name}}</p> 
             {{/if}}
           </p>
         </div>
          <div class="form-group">
           <label>Email</label>
           <input id="email" type="text" name="email" placeholder="email" class="form-control" value="{{orders.email}}" />
-           <p style="color: red"> &nbsp;
-            {{#if err.email}}
-              {{err.email}}
+             {{#if err.email}}
+         <p style="color: red; margin: 0; padding: 0">{{err.email}}</p> 
             {{/if}}
           </p>
         </div>
          <div class="form-group">
           <label>Contact Number</label>
           <input type="number" type="text" name="contactnumber" placeholder="contactnumber" class="form-control" value="{{orders.contactnumber}}" />
-           <p style="color: red"> &nbsp;
-            {{#if err.contactnumber}}
-              {{err.contactnumber}}
+             {{#if err.contactnumber}}
+         <p style="color: red; margin: 0; padding: 0">{{err.contactnumber}}</p> 
             {{/if}}
           </p>
         </div>
          <div class="form-group">
           <label> Address</label>
           <input id="address" type="text" name="address" placeholder="address" class="form-control" value="{{orders.address}}" />
-           <p style="color: red"> &nbsp;
-            {{#if err.address}}
-              {{err.address}}
+              {{#if err.address}}
+         <p style="color: red; margin: 0; padding: 0">{{err.address}}</p> 
             {{/if}}
           </p>
         </div>

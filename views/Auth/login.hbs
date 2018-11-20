@@ -60,6 +60,10 @@ body, html {
     background-color: white;
 }
 
+.login{
+   border-radius: 10px;
+}
+
 /* Full-width input fields */
 input[type=text], input[type=password] {
     width: 100%;
@@ -83,7 +87,7 @@ input[type=text]:focus, input[type=password]:focus {
     <a style="color:white" href=""><b>Admin</b>LTE</a>
   </div>
   <!-- /.login-logo -->
-  <div class="login-box-body">
+  <div class="login-box-body login">
     <p class="login-box-msg">Sign in to start your session</p>
 <form method="post" action="/Auth/login" onsubmit="return Validate()" name = "vform">
   <div class="form-group">

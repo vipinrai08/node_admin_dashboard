@@ -35,42 +35,37 @@
 <form action="" method="post" name="form1">
     <div class="box-body">
       <div class="form-group">
-          <label>Name</label>
-          <input id="name" type="text" name="name" placeholder="name" class="form-control" value="{{users.name}}" />
-               <p style="color: red"> &nbsp;
-            {{#if err.name}}
-              {{err.name}}
+          <label>Name*</label>
+         <input id="name" type="text" name="name" placeholder="name" class="form-control" value="{{users.name}}" />
+          {{#if err.name}}
+          <p style="color: red; margin: 0; padding: 0">{{err.name}}</p>
             {{/if}}
-          </p>
         </div>
+
         <div class="form-group">
-          <label>Age</label>
-          <input type="text" name="age" placeholder=" age" class="form-control" value="{{users.age}}" />
-          <p style="color: red"> &nbsp;
-            {{#if err.age}}
-              {{err.age}}
+          <label>Age*</label>
+        <input id="age" type="number" name="age" placeholder="age" class="form-control" value="{{users.age}}" />
+          {{#if err.age}}
+           <p style="color: red; margin: 0; padding: 0">{{err.age}}</p>
             {{/if}}
-          </p>
        </div>
-       <div class="form-group">
-         <label>Email</label>
-          <input type="text" name="email" placeholder="email" class="form-control" value="{{users.email}}" />
-          <p style="color: red"> &nbsp;
-            {{#if err.email}}
-              {{err.email}}
+
+        <div class="form-group">
+          <label>Email*</label>
+<input id="email" type="text" name="email" placeholder="email" class="form-control" value="{{users.email}}" />           {{#if err.email}}
+           <p style="color: red; margin: 0; padding: 0">{{err.email}}</p>
             {{/if}}
-          </p>
         </div>
-       </div>
+
         <div class="form-group">
-        <label>UserImage(optional)</label>
-         <input type="file" class="form-control" placeholder="userImage" name="userImage" value="{{users.userimage}}">
+        <label>photo(optional)</label>
+<input id="photo" type="file" name="photo" placeholder="photo" class="form-control" value="{{users.photo}}" />          {{#if err.photo}}
+           <p style="color: red; margin: 0; padding: 0">{{err.photo}}</p>
+            {{/if}}
+         </div>
   <div class="box-footer">
     <input type="submit" name="Submit" value="Update" class="btn btn-primary" />
   <input type="hidden" name="_method" value="PUT"/>
   </div>
 </form>
-</div>
-</div>
-</div>
 </section>

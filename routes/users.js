@@ -1,10 +1,37 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer')
-const upload = multer({ storage: multer.memoryStorage() })
+const multer = require('multer');
+const app = express();
+const crypto = require('crypto');
 
 
 
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/')
+    },
+    filename: function(req, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname)
+    }
+});
+
+const filefilter = function(req, file, cb){
+    //reject a file
+    if(file.mimetype === "image/jpg" || file.mimetype === "image/png") {
+        cb(null, true);
+    }
+    else{
+        cb(null, false);
+    }    
+};
+
+var upload = multer({ storage: storage,
+     limits: {
+     fileSize: 1024*1024*5
+     },
+   fileFilter: filefilter
+});
+    
 const User = require('../models/user');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte');// const ObjectId = require('mongodb').ObjectId
@@ -27,6 +54,7 @@ router.get('/',ensureAuthenticated,(req, res) =>{
     .select("name age email photo")
     .exec()
     .then(users => {
+        console.log(users,'users')
         res.render('users/list', { users })
     })
     .catch(err => {
@@ -43,13 +71,8 @@ router.get('/add', (req, res)=>{
     })
 })
 
-router.post('/add',upload.single('photo'), (req, res)=>{
-    if (req.file) {
-        console.log("hello")
-        console.log('Uploaded: ', req.file)
-    }
-   
-
+router.post('/add', upload.single('photo'), (req, res)=>{
+    
     let { isValid, errors} = validator(req.body);
     console.log(isValid, errors)
    
@@ -60,15 +83,17 @@ router.post('/add',upload.single('photo'), (req, res)=>{
             user: { name: req.body.name, age: req.body.age, email: req.body.email}
         });
     } else{
-        console.log(req.files, 'files');
+        console.log(req.file, 'files');
+        
         var user = new User({
             _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
             age: req.body.age,
-            email: req.body.email,
-        
-           
+            email: req.body.email, 
+            photo: req.file.photo
         });
+       
+
     
        user
         .save()
@@ -86,40 +111,10 @@ router.post('/add',upload.single('photo'), (req, res)=>{
     
     });
 
-    router.post('/upload', function(req, res) {
-            if(error){
-               res.redirect('/?msg=3');
-            }else{
-              if(req.file == undefined){
-                
-                res.redirect('/?msg=2');
-      
-              }else{
-                   
-                  /**
-                   * Create new record in mongoDB
-                   */
-                  var fullPath = "files/"+req.file.filename;
-      
-                  var document = {
-                    path:     fullPath, 
-                    caption:   req.body.caption
-                  };
-        
-                var photo = new Photo(document); 
-                photo.save(function(error){
-                  if(error){ 
-                    throw error;
-                  } 
-                  res.redirect('/?msg=1');
-               });
-            }
-          }
-        });    
-      
+  
         router.get('/edit/:id', async (req, res)=>{
             const users = await getUser(req.params.id);
-            res.render('products/edit',{
+            res.render('users/edit',{
                 title: 'Edit',
                 users
             })
@@ -143,7 +138,7 @@ router.put('/edit/:id', (req, res)=>{
     
 		res.render('users/edit', {
             err: errors,
-            user: { name: req.body.name, age: req.body.age, email: req.body.email, userImage: req.file.path}
+            user: { name: req.body.name, age: req.body.age, email: req.body.email}
         });
     } else{
    User.update({_id: req.params.id},
@@ -151,7 +146,7 @@ router.put('/edit/:id', (req, res)=>{
             name: req.body.name, 
             age:req.body.age, 
             email: req.body.email,
-            userImage: req.body.userImage
+            
         }
     })
     .exec()
