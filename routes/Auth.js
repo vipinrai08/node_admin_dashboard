@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var app = express();
+var mongoose = require('mongoose');
 var passport = require('passport');
 var configAuth = require('./configAuth');
 var LocalStrategy = require('passport-local').Strategy;
@@ -11,7 +12,11 @@ mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte');
 const { isEmpty } = require('lodash');
 const Validator = require('is_js');
 
-
+router.get('/forgotpassword',function(req,res){
+	res.render('Auth/forgotpassword', {
+		layout: false
+	})
+})
 
 
 // Login
@@ -133,33 +138,9 @@ passport.deserializeUser(function(id, done) {
 	});
 });
 
-// router.post('/login', function (req, res) {
 
-// 	let { isValid, errors} = validator(req.body);
 
-// 	if (!isValid) {
-// 		res.render('Auth/login', {
-// 			layout: false,
-// 			err: errors,
-// 			errors: {username: req.body.username,
-// 				password: req.body.password
-// 			}
-// 		})
-		
-// 	} else {
-// 		return passport.authenticate('local', {
-// 			successReturnToOrRedirect: '/dashboard',
-// 			failureRedirect: '/Auth/login',
-// 			failureFlash: true
-// 		})
-// 	}
-// })
-
-// router.post('/login', passport.authenticate('local', {
-// 	successReturnToOrRedirect: '/dashboard',
-// 	failureRedirect: '/Auth/login',
-// 	failureFlash: true
-// }))	
+	
 
 router.post('/login', function(req, res, next) {
 	passport.authenticate('local', function(err, user, info) {
@@ -213,6 +194,112 @@ router.post('/login', function(req, res, next) {
 	});
 	})(req, res, next);
   });
+
+
+//   router.get = ('/password_reset/:token' , function(req, res) {
+// 	exports.forgot_password = function(req, res) {
+// 		async.waterfall([
+// 		  function(done) {
+// 			User.findOne({
+// 			  email: req.body.email
+// 			}).exec(function(err, user) {
+// 			  if (user) {
+// 				done(err, user);
+// 			  } else {
+// 				done('User not found.');
+// 			  }
+// 			});
+// 		  },
+// 		  function(user, done) {
+// 			// create the random token
+// 			crypto.randomBytes(20, function(err, buffer) {
+// 			  var token = buffer.toString('hex');
+// 			  done(err, user, token);
+// 			});
+// 		  },
+// 		  function(user, token, done) {
+// 			User.findByIdAndUpdate({ _id: user._id }, { reset_password_token: token, reset_password_expires: Date.now() + 86400000 }, { upsert: true, new: true }).exec(function(err, new_user) {
+// 			  done(err, token, new_user);
+// 			});
+// 		  },
+// 		  function(token, user, done) {
+// 			var data = {
+// 			  to: user.email,
+// 			  from: email,
+// 			  template: 'forgot-password-email',
+// 			  subject: 'Password help has arrived!',
+// 			  context: {
+// 				url: 'http://localhost:3000/auth/reset_password?token=' + token,
+// 				name: user.fullName.split(' ')[0]
+// 			  }
+// 			};
+
+
+// //RESET PASSWORD
+// router.post('/password_reset', function(req, res){
+// 	exports.reset_password = function(req, res, next) {
+// 		User.findOne({
+// 		  reset_password_token: req.body.token,
+// 		  reset_password_expires: {
+// 			$gt: Date.now()
+// 		  }
+// 		}).exec(function(err, user) {
+// 		  if (!err && user) {
+// 			if (req.body.newPassword === req.body.verifyPassword) {
+// 			  user.hash_password = bcrypt.hashSync(req.body.newPassword, 10);
+// 			  user.reset_password_token = undefined;
+// 			  user.reset_password_expires = undefined;
+// 			  user.save(function(err) {
+// 				if (err) {
+// 				  return res.status(422).send({
+// 					message: err
+// 				  });
+// 				} else {
+// 				  var data = {
+// 					to: user.email,
+// 					from: email,
+// 					template: 'reset-password-email',
+// 					subject: 'Password Reset Confirmation',
+// 					context: {
+// 					  name: user.fullName.split(' ')[0]
+// 					}
+// 				  };
+	  
+// 				  smtpTransport.sendMail(data, function(err) {
+// 					if (!err) {
+// 					  return res.json({ message: 'Password reset' });
+// 					} else {
+// 					  return done(err);
+// 					}
+// 				  });
+// 				}
+// 			  });
+// 			} else {
+// 			  return res.status(422).send({
+// 				message: 'Passwords do not match'
+// 			  });
+// 			}
+// 		  } else {
+// 			return res.status(400).send({
+// 			  message: 'Password reset token is invalid or has expired.'
+// 			});
+// 		  }
+// 		});
+// 	  };
+
+// 		  smtpTransport.sendMail(data, function(err) {
+// 			if (!err) {
+// 			  return res.json({ message: 'Kindly check your email for further instructions' });
+// 			} else {
+// 			  return done(err);
+// 			}
+// 		  });
+// 		}
+// 	  ], function(err) {
+// 		return res.status(422).json({ message: err });
+// 	  });
+// 	};	
+
 
 
 // Signing using Facebook

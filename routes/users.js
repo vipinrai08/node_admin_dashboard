@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const app = express();
-const crypto = require('crypto');
-
-
+const fs = require('fs');
+const path = require('path');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, './uploads/')
+        cb(null, './public/uploads/')
     },
     filename: function(req, file, cb) {
         cb(null, new Date().toISOString() + file.originalname)
@@ -17,7 +15,7 @@ const storage = multer.diskStorage({
 
 const filefilter = function(req, file, cb){
     //reject a file
-    if(file.mimetype === "image/jpg" || file.mimetype === "image/png") {
+    if(file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
         cb(null, true);
     }
     else{
@@ -72,7 +70,7 @@ router.get('/add', (req, res)=>{
 })
 
 router.post('/add', upload.single('photo'), (req, res)=>{
-    
+
     let { isValid, errors} = validator(req.body);
     console.log(isValid, errors)
    
@@ -83,18 +81,17 @@ router.post('/add', upload.single('photo'), (req, res)=>{
             user: { name: req.body.name, age: req.body.age, email: req.body.email}
         });
     } else{
+      user = fs.readFileSync(req.file.path)
+      user.contentType = "photo/png";
         console.log(req.file, 'files');
         
         var user = new User({
             _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
             age: req.body.age,
-            email: req.body.email, 
-            photo: req.file.photo
+            email: req.body.email,
+            photo: req.file.path
         });
-       
-
-    
        user
         .save()
         .then(result => {
@@ -108,10 +105,8 @@ router.post('/add', upload.single('photo'), (req, res)=>{
            });
         
         }
-    
     });
-
-  
+       
         router.get('/edit/:id', async (req, res)=>{
             const users = await getUser(req.params.id);
             res.render('users/edit',{
@@ -202,5 +197,6 @@ function validator(data) {
         errors
     }
 }
+
  
 module.exports = router;

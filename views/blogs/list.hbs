@@ -37,38 +37,32 @@
 </style>
 <section class="content-header">
   <div class="breadcrumb-container">
-    <h3 style="margin: 0px">Users</h3>
+    <h3 style="margin: 0px">Blogs</h3>
   </div>
 
 <div class="btn-container">
-  <a class="btn" href="/users/add/">Add</a>
+  <a class="btn" href="/blogs/add/">Add</a>
 </div>
 <table width="80%" border="0" class="table-design">
   <tbody>
     <tr style="text-align:left; background-color:#CCC">
-      <th>#</th>
-      <th>Photo</th>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Email</th>
+       <th>#</th>
+      <th>Title</th>
+      <th>Description</th>
       <th>Action</th>
     </tr>
-    {{#each users}}
+    {{#each blogs}}
      {{#.}}
     <tr>
       <td><li class="order{{@index}}">  
         {{math @index "+" 1}}</li>
 {{/.}}</td>
-      <td>
-    {{this.photo}}
-    </td>
-      <td>{{this.name}} </td>
-      <td>{{this.age}}  </td>
-       <td>{{this.email}} </td>
+      <td>{{this.title}} </td>
+      <td>{{this.description}}  </td>
       <td>
         <div style="float:left">
-          <a href="/users/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
-          <a href="/users/delete/{{this.id}}">Delete</a>
+          <a href="/blogs/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
+          <a href="/blogs/delete/{{this.id}}">Delete</a>
         </div>
       </td>
     </tr>
