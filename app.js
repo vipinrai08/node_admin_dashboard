@@ -135,10 +135,8 @@ var contact = require('./routes/contact');
 var invoices = require('./routes/invoices');
 var payment = require('./routes/payment');
 var signout = require('./routes/signout');
-var teams = require('./routes/teams');
 var blogs = require('./routes/blogs');
-var services = require('./routes/services')
-var projects = require('./routes/projects');
+
 
 
 app.use('/dashboard',dashboard);
@@ -152,10 +150,8 @@ app.use('/contact', contact);
 app.use('/invoices', invoices);
 app.use('/payment', payment);
 app.use('/signout', signout);
-app.use('/teams', teams);
 app.use('/blogs', blogs);
-app.use('/services', services);
-app.use('/projects', projects);
+
 
 
 
@@ -179,7 +175,7 @@ app.get('/', function(req,res){
 });
 
 app.get(['/dashboard', '/orders', '/products',
- '/users', '/invoices', '/contact', '/payment', '/signout','services', 'teams', 'projects', 'blogs'],
+ '/users', '/invoices', '/contact', '/payment', '/signout', 'blogs'],
   function (req, res) {
 	res.send('');
   });
