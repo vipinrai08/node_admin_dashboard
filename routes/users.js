@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const fs = require('fs');
-const path = require('path');
+
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -61,6 +61,20 @@ router.get('/',ensureAuthenticated,(req, res) =>{
             error: err
         });
     });
+    const photoFolder = __dirname + '/public/uploads/';
+    fs.readdir(photoFolder, function(err, files){
+        if(err){
+            return console.log(err);
+        }
+        const filesArr = [];
+        var i = 1;
+        files.forEach(function(file){
+            filesArr.push({ name: file});
+            i++
+
+        });
+        res.json(filesArr);
+    })
  })
 
 router.get('/add', (req, res)=>{

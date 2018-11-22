@@ -48,7 +48,7 @@
   <div class="box-body">
       <div class="form-group">
           <label>Name*</label>
-          <input id="name" type="text" name="name" placeholder="name" class="form-control"  />
+          <input type="text"  name="name" placeholder="name" class="form-control"  />
              {{#if err.name}}
          <p style="color: red; margin: 0; padding: 0">{{err.name}}</p> 
             {{/if}}
@@ -84,9 +84,8 @@
         <div class="form-group">
          <label>Date*</label>
           <input type="date" name="date" placeholder="date" class="form-control" />
-           <p style="color: red"> &nbsp;
-            {{#if err.date}}
-              {{err.date}}
+           {{#if err.date}}
+         <p style="color: red; margin: 0; padding: 0">{{err.date}}</p> 
             {{/if}}
           </p>
         </div>

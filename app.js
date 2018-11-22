@@ -157,6 +157,7 @@ app.use('/blogs', blogs);
 
 
 
+
 app.get('/', function(req, res) {
 	if (req.isAuthenticated()){
 		res.redirect('/dashboard');
@@ -175,7 +176,7 @@ app.get('/', function(req,res){
 });
 
 app.get(['/dashboard', '/orders', '/products',
- '/users', '/invoices', '/contact', '/payment', '/signout', 'blogs'],
+ '/users', '/invoices', '/contact', '/payment', '/signout', '/blogs'],
   function (req, res) {
 	res.send('');
   });

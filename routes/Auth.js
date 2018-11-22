@@ -145,6 +145,7 @@ passport.deserializeUser(function(id, done) {
 router.post('/login', function(req, res, next) {
 	passport.authenticate('local', function(err, user, info) {
 
+
 	if (err) {
 		console.log(err, 'err')  
 		return next(err);

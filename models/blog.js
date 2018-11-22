@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-BlogSchema = mongoose.Schema({
+blogSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
 
  title: {
@@ -10,4 +10,4 @@ BlogSchema = mongoose.Schema({
   }
   
 });
-module.exports = mongoose.model('Blog', BlogSchema);
+module.exports = mongoose.model('Blog', blogSchema);

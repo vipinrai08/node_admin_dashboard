@@ -1,4 +1,14 @@
+<html>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+          $('.like').on('click', () => {
+  let val = parseInt($('.likes').text());
+  console.log(val);
+  $('.likes').text(val + 1);
+  });
+</script>
 
+  </body>
 <style>
   .table-design {
     border-collapse: collapse;
@@ -34,6 +44,43 @@
     padding: 8px;
     color: rgb(48, 42, 42);
   }
+  .clear-fix {
+    clear: both;
+  }
+  .blog-title {
+    background-color: #3c8dbc;
+    color: #fff;
+    padding: 10px;
+  }
+  .title-h2 {
+    margin: 0px;
+    padding: 0px;
+  }
+  .blog-desc {
+    font-size: 16px;
+    padding: 10px;
+    text-align: justify;
+  }
+  .blog-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 11px;
+  }
+  .util-btn {
+    padding: 6px;
+    cursor: pointer;
+    color: #3c8dbc;
+  }
+  .blogs-container {
+    width: 78%; 
+  }
+  .blog-item {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: -3px 6px 19px 1px rgba(194,194,194,1);
+    margin-bottom: 16px;
+  }
 </style>
 <section class="content-header">
   <div class="breadcrumb-container">
@@ -43,31 +90,61 @@
 <div class="btn-container">
   <a class="btn" href="/blogs/add/">Add</a>
 </div>
-<table width="80%" border="0" class="table-design">
-  <tbody>
-    <tr style="text-align:left; background-color:#CCC">
-       <th>#</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Action</th>
-    </tr>
-    {{#each blogs}}
-     {{#.}}
+<div class="clear-fix"></div>
+
+<div class="blogs-container">
+  {{#each blogs}}
+    <div class="blog-item">
+      <div class="blog-title">
+        <h2 class="title-h2">{{this.title}}</h2>
+      </div>
+      <div class="blog-desc">
+        <p>{{this.description}}</p>
+      </div>
+      <div class="blog-footer">
+        <div>
+          
+          <button class="like"> 
+            <i class="fa fa-heart"></i>
+            {{!-- <span class="likes">0</span>  --}}
+          </button>
+
+           <button class="comment"> 
+            <i class="fa fa-comment"></i>
+          </button>
+
+           <button class="share"> 
+            <i class="fa fa-share"></i>
+          </button>
+        </div>
+        <div>
+          <a href="/blogs/edit/{{this.id}}">Edit</a> &nbsp; 
+          <a href="/blogs/delete/{{this.id}}">Delete</a>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>
+
+    
+
+
+
+    
+     {{!-- {{#.}}
     <tr>
       <td><li class="order{{@index}}">  
         {{math @index "+" 1}}</li>
 {{/.}}</td>
-      <td>{{this.title}} </td>
-      <td>{{this.description}}  </td>
+      <td></td>
+      <td></td>
       <td>
         <div style="float:left">
           <a href="/blogs/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
           <a href="/blogs/delete/{{this.id}}">Delete</a>
         </div>
       </td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
+    </tr> --}}
+    
 </section>
 

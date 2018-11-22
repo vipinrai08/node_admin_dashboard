@@ -41,7 +41,7 @@
       <div class="box-body">
         <div class="form-group">
           <label>Name*</label>
-          <input id="name" type="text" name="name" class="form-control" placeholder="Please enter your name"/>
+          <input type="text" name="name" placeholder="please enter your fullname" class="form-control"/>
           {{#if err.name}}
           <p style="color: red; margin: 0; padding: 0">{{err.name}}</p>
             {{/if}}
@@ -65,12 +65,11 @@
 
         <div class="form-group">
         <label>photo(optional)</label>
-         <input type="file" class="form-control" placeholder="photo" name="photo">
+         <input type="file"  placeholder="photo" name="photo" class="form-control">
           {{#if err.photo}}
            <p style="color: red; margin: 0; padding: 0">{{err.photo}}</p>
             {{/if}}
          </div>
-</div>
        </div>
           <input type="submit" name="Submit" placeholder="Add" class="btn btn-primary"/>
 

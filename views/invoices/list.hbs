@@ -66,24 +66,25 @@
       <td><li class="order{{@index}}">  
         {{math @index "+" 1}}</li>
 {{/.}}</td>
-      <td>{{this.name}} </td>
+      <td>{{this.name}}</td>
       <th>{{this.email}}</th>
-      <td>{{this.contactnumber}} </td>
-      <td>{{this.city}} </td>
-      <td>{{this.address}} </td>
-      <td>{{this.zipcode}} </td>
+      <td>{{this.contactnumber}}</td>
+      <td>{{this.city}}</td>
+      <td>{{this.address}}</td>
+      <td>{{this.zipcode}}</td>
       {{!-- <td>{{this.cardname}} </td>
       <td>{{this.cardnumber}} </td>
       <td>{{this.expmonth}} </td>
       <td>{{this.expyear}} </td>
       <td>{{this.cvv}} </td> --}}
-      <td>
+     <td>
         <div style="float:left">
           <a href="/invoices/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
-          <a href="/invoices/delete/{{this.id}}">Delete</a> 
-          </div>
+          <a href="/invoices/delete/{{this.id}}">Delete</a>
+        </div>
       </td>
     </tr>
     {{/each}}
   </tbody>
 </table>
+</section>
