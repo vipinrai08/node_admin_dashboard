@@ -31,12 +31,12 @@
     text-align: right;
     float: right
   }
-  .breadcrumb-container {
+.breadcrumb-container {
     background-color: #ddd;
     border-radius: 5px;
     padding: 8px;
     color: rgb(48, 42, 42);
-  }
+  } 
   .clear-fix {
     clear: both;
   }
@@ -67,13 +67,13 @@
   .blogs-container {
     width: 78%; 
   }
-  .blog-item {
+ .blog-item {
     background-color: #fff;
     padding: 10px;
     border-radius: 5px;
     box-shadow: -3px 6px 19px 1px rgba(194,194,194,1);
     margin-bottom: 16px;
-  }
+  } 
 </style>
 <section class="content-header">
   <div class="breadcrumb-container">
@@ -108,7 +108,25 @@
     
 </section> --}}
 
-
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
+</head>
 <style>
   .table-design {
     border-collapse: collapse;
@@ -122,7 +140,7 @@
   .table-design tr:nth-child(even) {
     background-color: #dddddd;
   }
- .btn {
+.btn {
     margin-right: 23px;
     border: 1px solid grey;
     padding: 10px;
@@ -130,8 +148,8 @@
     width: 88px;
     display: block;
     text-align: center;
-    background-color: #1e282c;
-    color: #fff;
+    background-color: darkgrey;
+    color: #100606;
     font-weight: 800
   }
   .btn-container {
@@ -171,7 +189,7 @@
       <td>{{this.description}}</td>
       <td>
         <div style="float:left">
-          <a href="/blogs/edit/{{this.id}}">Edit</a> &nbsp;
+          <a href="/blogs/edit/{{this.id}}">Edit</a> &nbsp;| &nbsp;
           <a href="/blogs/delete/{{this.id}}">Delete</a>
         </div>
       </td>

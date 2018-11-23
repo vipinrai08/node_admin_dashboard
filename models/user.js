@@ -12,7 +12,21 @@ usercrudSchema = mongoose.Schema({
       type: String
   },
   photo:
-    { type: String }
+    { 
+        type: String 
+    },
+    facebook: {
+        id: String,
+        token: String,
+        email: String,
+        name: String
+    },
+    google: {
+        id: String,
+        token: String,
+        email: String,
+        name: String
+    },
   
 });
 module.exports = mongoose.model('UserCrud', usercrudSchema);
