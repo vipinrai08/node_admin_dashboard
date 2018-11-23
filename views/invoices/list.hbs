@@ -32,7 +32,7 @@
     background-color: #ddd;
     border-radius: 5px;
     padding: 8px;
-    color: #444;
+    color: rgb(48, 42, 42);
   }
 </style>
 <section class="content-header">
@@ -49,15 +49,10 @@
       <th>#</th>
       <th>Name</th>
       <th>Email</th>
-      <th>Contactnumber</th>
+      <th>ContactNumber</th>
       <th>City</th>
       <th>Address</th>
       <th>Zipcode</th>
-      {{!-- <th>Cardname</th>
-      <th>Cardnumber</th>
-      <th>Expmonth</th>
-      <th>Expyear</th>
-      <th>Cvv</th> --}}
       <th>Action</th>
     </tr>
     {{#each invoices}}
@@ -66,18 +61,13 @@
       <td><li class="order{{@index}}">  
         {{math @index "+" 1}}</li>
 {{/.}}</td>
-      <td>{{this.name}}</td>
-      <th>{{this.email}}</th>
-      <td>{{this.contactnumber}}</td>
-      <td>{{this.city}}</td>
-      <td>{{this.address}}</td>
-      <td>{{this.zipcode}}</td>
-      {{!-- <td>{{this.cardname}} </td>
-      <td>{{this.cardnumber}} </td>
-      <td>{{this.expmonth}} </td>
-      <td>{{this.expyear}} </td>
-      <td>{{this.cvv}} </td> --}}
-     <td>
+       <td>{{this.name}} </td>
+       <td>{{this.email}} </td>
+       <td>{{this.contactnumber}} </td>
+       <td>{{this.city}} </td>
+       <td>{{this.address}} </td>
+       <td>{{this.zipcode}} </td>
+      <td>
         <div style="float:left">
           <a href="/invoices/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
           <a href="/invoices/delete/{{this.id}}">Delete</a>
@@ -88,3 +78,4 @@
   </tbody>
 </table>
 </section>
+

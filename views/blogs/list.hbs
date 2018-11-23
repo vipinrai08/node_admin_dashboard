@@ -1,14 +1,7 @@
-<html>
-  <body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
-          $('.like').on('click', () => {
-  let val = parseInt($('.likes').text());
-  console.log(val);
-  $('.likes').text(val + 1);
-  });
-</script>
-
-  </body>
+  {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="/js/getrequest.js"></script>
+  <script src="/js/postrequest.js"></script>
 <style>
   .table-design {
     border-collapse: collapse;
@@ -103,19 +96,6 @@
       </div>
       <div class="blog-footer">
         <div>
-          
-          <button class="like"> 
-            <i class="fa fa-heart"></i>
-            {{!-- <span class="likes">0</span>  --}}
-          </button>
-
-           <button class="comment"> 
-            <i class="fa fa-comment"></i>
-          </button>
-
-           <button class="share"> 
-            <i class="fa fa-share"></i>
-          </button>
         </div>
         <div>
           <a href="/blogs/edit/{{this.id}}">Edit</a> &nbsp; 
@@ -125,26 +105,81 @@
     </div>
   {{/each}}
 </div>
-
     
+</section> --}}
 
 
+<style>
+  .table-design {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .table-design td, .table-design th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  .table-design tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+ .btn {
+    margin-right: 23px;
+    border: 1px solid grey;
+    padding: 10px;
+    margin: 10px 0px;
+    width: 88px;
+    display: block;
+    text-align: center;
+    background-color: #1e282c;
+    color: #fff;
+    font-weight: 800
+  }
+  .btn-container {
+    text-align: right;
+    float: right
+  }
+  .breadcrumb-container {
+    background-color: #ddd;
+    border-radius: 5px;
+    padding: 8px;
+    color: rgb(48, 42, 42);
+  }
+</style>
+<section class="content-header">
+  <div class="breadcrumb-container">
+    <h3 style="margin: 0px">Blogs</h3>
+  </div>
 
-    
-     {{!-- {{#.}}
+<div class="btn-container">
+  <a class="btn" href="/blogs/add/">Add</a>
+</div>
+<table width="80%" border="0" class="table-design">
+  <tbody>
+    <tr style="text-align:left; background-color:#CCC">
+      <th>#</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Action</th>
+    </tr>
+    {{#each blogs}}
+     {{#.}}
     <tr>
       <td><li class="order{{@index}}">  
         {{math @index "+" 1}}</li>
 {{/.}}</td>
-      <td></td>
-      <td></td>
+      <td>{{this.title}}</td>
+      <td>{{this.description}}</td>
       <td>
         <div style="float:left">
-          <a href="/blogs/edit/{{this.id}}">Edit</a> &nbsp; | &nbsp;
+          <a href="/blogs/edit/{{this.id}}">Edit</a> &nbsp;
           <a href="/blogs/delete/{{this.id}}">Delete</a>
         </div>
       </td>
-    </tr> --}}
-    
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
 </section>
+
+
 

@@ -7,28 +7,30 @@ var ObjectId = require('mongodb').ObjectId
 const { isEmpty } = require('lodash');
 const Validator = require('is_js');
 
-
-
 function ensureAuthenticated(req, res, next){
 	if (req.isAuthenticated()){
 		return next();
 	}
 	res.redirect('/Auth/login');
 }
-router.get('/', ensureAuthenticated, (req, res) => {
-    Invoice.find()
+
+router.get('/',ensureAuthenticated,(req, res) =>{
+   Invoice.find()
     .select("name email contactnumber city address zipcode")
     .exec()
-    .then(invoices => {console.log(invoices)
-    res.render('invoices/list', {invoices})
-})
-.catch(err => {
-    console.log(err);
-    res.status(500).json({
-        error: err
+    .then(invoices => {
+        console.log(invoices,'invoices')
+        res.render('invoices/list', { invoices })
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
     });
-  });
-})
+});
+
+
 
 router.get('/add', (req, res) => {
     res.render('invoices/add', {
@@ -39,25 +41,7 @@ router.get('/add', (req, res) => {
 router.post('/add', (req, res) => {
     let { isValid, errors} = validator(req.body);
     console.log(isValid, errors)
-    // req.checkBody('name', 'Name is required').notEmpty();
-    // req.checkBody('email', 'Email does not appear to be valid').isEmail();
-    // req.checkBody('contactnumber', 'Contactnumber is required').isNumeric();
-    // req.checkBody('city', 'City is required').notEmpty();
-    // req.checkBody('address', 'Address is required').notEmpty();
-    // req.checkBody('zipcode','Zipcode is required').notEmpty();
-
-    // var err = req.validationErrors();
-	// console.log(err)
-	   if (!isValid) {
-    //     var newErr = {};
-    //     err && err.length ? err.map(item => {
-    //         newErr = {
-    //             ...newErr,
-    //             [item.param]: item.msg
-    //         }
-    //     }) : {}
-
-    //     console.log(newErr, 'newErr');
+	   if (!isValid) {s
 		res.render('invoices/add', {
             err: errors,
             invoice: { name: req.body.name, email: req.body.email, contactnumber: req.body.contactnumber,

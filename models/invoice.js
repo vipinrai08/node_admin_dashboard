@@ -21,22 +21,5 @@ invoiceSchema = mongoose.Schema({
         }
     },
 
-        payment : {
-            cardname: {
-                type: String
-            },
-            cardnumber: {
-                type: Number
-            },
-            expmonth: {
-                type: String
-            },
-            expyear: {
-                type: Number
-            },
-            cvv: {
-                type: Number
-            }
-        },
 });
 module.exports = mongoose.model('Invoice', invoiceSchema);

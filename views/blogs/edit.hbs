@@ -29,14 +29,14 @@
       <div class="box box-primary">
   <div class="box-header with-border">
   <h3 class="box-title">
- Blogs/Update Blog
+   Blogs/Update Blog
   </h3>
   </div>
 <form action="" method="post" name="form1">
     <div class="box-body">
       <div class="form-group">
           <label>Title*</label>
-         <input id="title" type="text" name="title" placeholder="name" class="form-control" value="{{blogs.title}}" />
+         <input id="title" type="text" name="title" placeholder="title" class="form-control" value="{{blogs.title}}" />
           {{#if err.title}}
           <p style="color: red; margin: 0; padding: 0">{{err.title}}</p>
             {{/if}}
@@ -44,11 +44,10 @@
 
         <div class="form-group">
           <label>Description*</label>
-        <input id="description" type="text" name="description" placeholder="description" class="form-control" value="{{blogs.description}}" />
-          {{#if err.description}}
+<input id="description" type="text" name="description" placeholder="description" class="form-control" value="{{blogs.description}}" />           {{#if err.description}}
            <p style="color: red; margin: 0; padding: 0">{{err.description}}</p>
             {{/if}}
-       </div>
+        </div>
 
   <div class="box-footer">
     <input type="submit" name="Submit" value="Update" class="btn btn-primary" />

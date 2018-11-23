@@ -73,7 +73,7 @@ router.post('/add', (req, res)=>{
                blogs
            })
        });
-     
+
        async function getBlog(id) {
            try{
                const blog = await Blog.findOne({ _id: id}).exec();
@@ -82,34 +82,37 @@ router.post('/add', (req, res)=>{
                throw err;
            }
        }
+       
     
-router.put('/edit/:id', (req, res)=> {
-    let { isValid, errors} = validator(req.body);
-    console.log(isValid, errors)
-    
-	if (!isValid) {
-    
-		res.render('blogs/edit', {
-            err: errors,
-            blog: { title: req.body.title, description: req.body.description}
-        });
-    } else {
-        Blog.update({ id: req.params.id},
-            { $set: {
+       router.put('/edit/:id', (req, res)=>{
+        let { isValid, errors} = validator(req.body);
+        console.log(isValid, errors)
+        
+        if (!isValid) {
+        
+            res.render('blogs/edit', {
+                err: errors,
+                blog: {title: req.body.title, description: req.body.description}
+            });
+        } else{
+       Blog.update({_id: req.params.id},
+            { $set:{ 
                 title: req.body.title,
                 description: req.body.description
+                
             }
         })
         .exec()
         .then(res => {
             res.redirect('/blogs');
-            req.flash('Blog Updated');
+            req.flash('User Updated');
         })
         .catch(err => {
             res.redirect('/blogs');
-        });
-    } 
-});
+        })
+    }
+    })
+    
 
 router.get('/delete/:id', (req, res)=> {
     Blog.remove({ _id: req.params.id})
