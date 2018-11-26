@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var app = express();
 var mongoose = require('mongoose');
 var passport = require('passport');
-var configAuth = require('./configAuth');
+graph = require('fbgraph');
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var User = require('../models/users');
@@ -11,12 +10,8 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte');
 const { isEmpty } = require('lodash');
 const Validator = require('is_js');
-
-router.get('/forgotpassword',function(req,res){
-	res.render('Auth/forgotpassword', {
-		layout: false
-	})
-})
+//const config = require('../config/auths')
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 
 // Login
@@ -194,47 +189,125 @@ router.post('/login', function(req, res, next) {
 		return res.redirect('/dashboard');
 	});
 	})(req, res, next);
-  });
 
+});
+	
+//signing with facebook//
+	passport.use(new FacebookStrategy({
+    clientID: '245686906110731',
+    clientSecret: 'bf2d82f373f3005cff3a9dbfbb3d6154',
+    callbackURL: "http://localhost:3000/auth/facebook/callback"
+	},
+	function(accessToken, refreshToken, profile, done) {
+		if(profile && profile.id) {
+			User.findOne({ facebook: profile.id }, function(err, existingUser) {
+				let user = {
+					'id': profile.id,
+					'name': profile.displayName,
+					'gender': profile.gender ? profile.gender : ''
+				}
+				user
+				.save(function(err) {
+			  req.flash('info', { msg: 'Facebook account has been linked.' });
+			  done(err, user);
+		
 
-
-
- //Signing using Facebook
-passport.use(new FacebookStrategy({
-    clientID: configAuth.facebookAuth.clientID,
-    clientSecret: configAuth.facebookAuth.clientSecret,
-    callbackURL: configAuth.facebookAuth.callbackURL
-  },
-  function(accessToken, refreshToken, profile, done) {
-   Process.nextTick(function(){
-	   User.findOne({'facebook.id':profile.id}, function (err, user) {
-		   if(err)
-		   return done(err);
-		   if (user)
-		   return done(null, user);
-		   else{
-			   var newUser = new User();
-				   newUser.facebook.id = profile.id,
-				   newUser.facebook.token = accessToken,
-				   newUser.facebook.name = profile.name.givenName +' '+ profile.name.familyName,
-				   newUser.facebook.email = profile.emails[0].value;
-
-				   newUser.save(function(err){
-					   if(err)
-					   throw err;
-					   return done(null, newUser);
-				   });
-
-		   }
-	   });
-	});
-  }
+				})
+		   })
+		}
+	}
 ));
+ router.get('/facebook',passport.authenticate('facebook'), function(req, res){
+	var token = _.find(req.user.tokens, { kind: 'facebook' });
+	graph.setAccessToken(token.accessToken);
+	async.parallel({
+	  getMe: function(done) {
+		graph.get(req.user.facebook + "?fields=id,name,email,first_name,last_name,gender,link,locale,timezone", function(err, me) {
+		  done(err, me);
+		});
+	  },
+	  getMyFriends: function(done) {
+		graph.get(req.user.facebook + '/friends', function(err, friends) {
+		  done(err, friends.data);
+		});
+	  }
+	},
+	function(err, results) {
+	  if (err) {
+		return next(err);
+	  }
+	  res.render('/facebook', {
+		title: 'Facebook API',
+		me: results.getMe,
+		friends: results.getMyFriends
+	  });
+	});
+ });
+ 
+ router.get('/facebook/callback', passport.authenticate('facebook', 
+ { successRedirect: '/profile', failureRedirect: '/Auth/login' }));
 
-router.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email']}));
-router.get('/auth/facebook/callback',
- passport.authenticate('facebook', { successRedirect: '/profile',
-									  failureRedirect: '/auth/login' }));
+
+// signing with google
+// passport.use(new GoogleStrategy({
+
+// 	clientID        : configAuth.googleAuth.clientID,
+// 	clientSecret    : configAuth.googleAuth.clientSecret,
+// 	callbackURL     : configAuth.googleAuth.callbackURL,
+
+// },
+// function(token, refreshToken, profile, done) {
+
+// 	// make the code asynchronous
+// 	// User.findOne won't fire until we have all our data back from Google
+// 	process.nextTick(function() {
+
+// 		// try to find the user based on their google id
+// 		User.findOne({ 'google.id' : profile.id }, function(err, user) {
+// 			if (err)
+// 				return done(err);
+
+// 			if (user) {
+
+// 				// if a user is found, log them in
+// 				return done(null, user);
+// 			} else {
+// 				// if the user isnt in our database, create a new user
+// 				var newUser          = new User();
+
+// 				// set all of the relevant information
+// 				newUser.google.id    = profile.id;
+// 				newUser.google.token = token;
+// 				newUser.google.name  = profile.displayName;
+// 				newUser.google.email = profile.emails[0].value; // pull the first email
+
+// 				// save the user
+// 				newUser.save(function(err) {
+// 					if (err)
+// 						throw err;
+// 					return done(null, newUser);
+// 				});
+// 			}
+// 		});
+// 	});
+
+// }));
+// router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+//     // the callback after google has authenticated the user
+//     router.get('/auth/google/callback',
+//             passport.authenticate('google', {
+//                     successRedirect : '/profile',
+//                     failureRedirect : '/'
+//             }));
+
+//     // if user is authenticated in the session, carry on
+//     if (req.isAuthenticated())
+//         return next();
+
+//     // if they aren't redirect them to the home page
+//     res.redirect('/');
+
 
 	function validator(data) {
 	let errors = {};
