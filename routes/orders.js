@@ -39,28 +39,7 @@ router.get('/add', (req, res)=>{
 router.post('/add', (req, res)=>{
     let { isValid, errors} = validator(req.body);
     console.log(isValid, errors)
-    // req.checkBody('name', 'Name is required').notEmpty();
-    // req.checkBody('categories', 'Categories is required').notEmpty();
-    // req.checkBody('price', 'Price is required').isNumeric();
-    // req.checkBody('date', 'Date is required').notEmpty();
-    // req.checkBody('email', 'Email does not appear to be valid').isEmail();
-    // req.checkBody('contactnumber', 'Contactnumber is required').isNumeric();
-    // req.checkBody('address', 'Address is required').notEmpty();
-
- 
-    // var err = req.validationErrors();
-    // console.log(err)
     if (!isValid) {
-	// if (err) {
-    //     let newErr = {};
-    //     err && err.length ? err.map(item => {
-    //         newErr = {
-    //             ...newErr,
-    //             [item.param]: item.msg
-    //         }
-    //     }) : {}
-
-    //     console.log(newErr, 'newErr');
 		res.render('orders/add', {
             err: errors,
             order: { products: req.body.products, categories: req.body.categories, name: req.body.name, 
@@ -162,6 +141,7 @@ router.get('/delete/:id', (req,res)=>{
     });
 })
 
+//Validation function//
 function validator(data) {
     let errors = {};
     

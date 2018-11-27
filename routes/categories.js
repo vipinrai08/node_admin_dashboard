@@ -37,24 +37,12 @@ router.get('/add', (req, res)=>{
         title: 'Add'
     })
 })
+
 router.post('/add', (req, res)=>{
-    // req.checkBody('name', 'Name is required').notEmpty();
     let { isValid, errors} = validator(req.body);
     console.log(isValid, errors)
     
-    // var err = req.validationErrors();
     if (!isValid) {
-	// console.log(err)
-	// if (err) {
-    //     let newErr = {};
-    //     err && err.length ? err.map(item => {
-    //         newErr = {
-    //             ...newErr,
-    //             [item.param]: item.msg
-    //         }
-    //     }) : {}
-
-        // console.log(newErr, 'newErr');
 		res.render('categories/add', {
             err: errors,
             categories: { name: req.body.name}
@@ -122,8 +110,8 @@ router.put('/edit/:id', (req, res)=>{
     })
     .catch(err => {
         res.redirect('/categories');
-    })
-}
+     })
+   }
 })
 
 
@@ -139,6 +127,7 @@ router.get('/delete/:id', (req,res)=>{
     });
 })
 
+// Validation function//
 function validator(data) {
     let errors = {};
 

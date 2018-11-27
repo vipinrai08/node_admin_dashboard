@@ -111,7 +111,7 @@ router.post('/add', (req, res)=>{
             res.redirect('/blogs');
         })
     }
-    })
+});
     
 
 router.get('/delete/:id', (req, res)=> {
@@ -126,7 +126,7 @@ router.get('/delete/:id', (req, res)=> {
     });
 });
 
-
+//Validation function//
 function validator(data) {
     let errors = {};
 

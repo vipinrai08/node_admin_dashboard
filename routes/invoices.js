@@ -126,6 +126,7 @@ router.get('/delete/:id', (req,res)=>{
     });
 })
 
+// Validation function//
 function validator(data) {
     let errors = {};
     
@@ -160,8 +161,6 @@ function validator(data) {
     if(Validator.empty(data.zipcode) && !parseInt(data.zipcode)) {
         errors.zipcode = "Zipcode number should be in numeric form!"
     }
-
-   
 
     return{
         isValid: isEmpty(errors),

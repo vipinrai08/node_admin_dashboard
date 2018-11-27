@@ -37,9 +37,7 @@ const { isEmpty } = require('lodash');
 const Validator = require('is_js');
 
 
-// router.get('/users', (req, res) => {
-//     res.render('users', {title: 'users'});
-// });
+
 function ensureAuthenticated(req, res, next){
 	if (req.isAuthenticated()){
 		return next();
@@ -49,7 +47,7 @@ function ensureAuthenticated(req, res, next){
 
 router.get('/',ensureAuthenticated,(req, res) =>{
    User.find()
-    .select("name age email photo")
+    .select("name age email")
     .exec()
     .then(users => {
         console.log(users,'users')
@@ -61,21 +59,9 @@ router.get('/',ensureAuthenticated,(req, res) =>{
             error: err
         });
     });
-    const photoFolder = __dirname + '/public/uploads/';
-    fs.readdir(photoFolder, function(err, files){
-        if(err){
-            return console.log(err);
-        }
-        const filesArr = [];
-        var i = 1;
-        files.forEach(function(file){
-            filesArr.push({ name: file});
-            i++
-
-        });
-        res.json(filesArr);
+   
     })
- })
+ 
 
 router.get('/add', (req, res)=>{
     res.render('users/add',{
@@ -95,8 +81,6 @@ router.post('/add', upload.single('photo'), (req, res)=>{
             user: { name: req.body.name, age: req.body.age, email: req.body.email}
         });
     } else{
-      user = fs.readFileSync(req.file.path)
-      user.contentType = "photo/png";
         console.log(req.file, 'files');
         
         var user = new User({
@@ -104,7 +88,6 @@ router.post('/add', upload.single('photo'), (req, res)=>{
             name: req.body.name,
             age: req.body.age,
             email: req.body.email,
-            photo: req.file.path
         });
        user
         .save()
@@ -182,6 +165,8 @@ router.get('/delete/:id', (req,res)=>{
     });
 })
 
+
+//Validation function//
 function validator(data) {
     let errors = {};
 
@@ -195,8 +180,6 @@ function validator(data) {
     if(Validator.not.empty(data.age) && !parseInt(data.age)) {
         errors.age = "Age should be in numeric form!"
     }
-
-
 
     if(Validator.empty(data.email)) {
         errors.email = "Email is required!  "

@@ -49,9 +49,7 @@ app.use(expressValidator());
 app.use(cookieParser());
 app.use(morgan('dev'));
 
-// app.use(multer({
-//     dest: './public/img/portfolio/'
-// }));
+
 
 app.use(methodOverride(function (req, res) {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -175,6 +173,8 @@ app.get('/', function(req,res){
   });
 });
 
+
+//accessable list of routes//
 app.get(['/dashboard', '/orders', '/products',
  '/users', '/invoices', '/contact', '/payment', '/signout', '/blogs'],
   function (req, res) {

@@ -30,7 +30,7 @@
   .table-design tr:nth-child(even) {
     background-color: #dddddd;
   }
- .btn {
+ .btn1 {
     margin-right: 23px;
     border: 1px solid grey;
     padding: 10px;
@@ -38,7 +38,7 @@
     width: 88px;
     display: block;
     text-align: center;
-    background-color: darkgrey;
+    background-color: #878f98;
     color: #100606;
     font-weight: 800
   }
@@ -59,13 +59,12 @@
   </div>
 
 <div class="btn-container">
-  <a class="btn" href="/users/add/">Add</a>
+  <a class="btn1" href="/users/add/">Add</a>
 </div>
 <table width="80%" border="0" class="table-design">
   <tbody>
     <tr style="text-align:left; background-color:#CCC">
       <th>#</th>
-      <th>Photo</th>
       <th>Name</th>
       <th>Age</th>
       <th>Email</th>
@@ -77,9 +76,6 @@
       <td><li class="order{{@index}}">  
         {{math @index "+" 1}}</li>
 {{/.}}</td>
-      <td>
-    {{this.photo}}
-    </td>
       <td>{{this.name}} </td>
       <td>{{this.age}}  </td>
        <td>{{this.email}} </td>

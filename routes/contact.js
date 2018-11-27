@@ -72,6 +72,8 @@ router.post('/', function(req, res, next) {
   });
 }
 });
+
+//Validation function//
 function validator(data) {
     let errors = {};
     
@@ -105,16 +107,6 @@ function validator(data) {
         errors
     }
 }
-  
-//   transporter.sendMail(mailOptions, function(error, info){
-//     if(error){
-//         console.log(error);
-//         res.redirect('/');
-//     } else {
-//         console.log('message Sent: ' + info.response);
-//         res.redirect('/contact');
-//     }
-//   });
-//   });
+
   
   module.exports = router;

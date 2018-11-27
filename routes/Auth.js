@@ -10,7 +10,6 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://admin:admin123@ds135433.mlab.com:35433/adminlte');
 const { isEmpty } = require('lodash');
 const Validator = require('is_js');
-//const config = require('../config/auths')
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 
@@ -57,27 +56,7 @@ router.post('/register', function(req, res) {
  
 	let { isValid, errors} = validator(req.body);
     console.log(isValid, errors)
-	// Validation
-	// req.checkBody('name', 'Name is required').notEmpty();
-	// req.checkBody('email', 'Email is required').notEmpty();
-	// req.checkBody('email', 'Email does not appear to be valid').isEmail();
-	// req.checkBody('username', 'Username is required').notEmpty();
-	// req.checkBody('password', 'Password is required').notEmpty();
-
-
-	// var err = req.validationErrors();
-	// console.log(err)
 	if (!isValid) {
-	// if (err) {
-	// 	var newErr = {};
-	// 	err && err.length ? err.map(item => {
-    //         newErr = {
-    //             ...newErr,
-    //             [item.param]: item.msg
-    //         }
-    //     }) : {}
-
-    //     console.log(newErr, 'newErr');
 		res.render('Auth/register', {
 			layout: false,
 			err: errors,
@@ -135,7 +114,7 @@ passport.deserializeUser(function(id, done) {
 
 
 
-	
+	//Login//
 
 router.post('/login', function(req, res, next) {
 	passport.authenticate('local', function(err, user, info) {
@@ -308,6 +287,10 @@ router.post('/login', function(req, res, next) {
 //     // if they aren't redirect them to the home page
 //     res.redirect('/');
 
+
+
+
+// Validation function//
 
 	function validator(data) {
 	let errors = {};
