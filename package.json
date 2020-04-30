@@ -37,7 +37,7 @@
     "isjs": "^0.2.1",
     "isvalid": "^1.6.6",
     "joi": "^14.0.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "jsonwebtoken": "^8.3.0",
     "localStorage": "^1.0.4",
     "lodash": "^4.17.11",
