@@ -49,7 +49,7 @@
     "nodemailer": "^4.6.8",
     "nodemailer-express-handlebars": "^3.0.0",
     "nodemon": "^1.18.6",
-    "npm": "^6.4.1",
+    "npm": "^6.14.6",
     "passport": "*",
     "passport-facebook": "^2.1.1",
     "passport-facebook-token": "^3.3.0",
